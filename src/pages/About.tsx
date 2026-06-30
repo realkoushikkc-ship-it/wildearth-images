@@ -38,15 +38,15 @@ export default function About() {
                 className="text-2xl lg:text-3xl text-gray-800 font-light leading-relaxed italic"
                 style={{ fontFamily: "Playfair Display, serif" }}
               >
-                "Every frame I make is a love letter to the natural world, and a plea to protect it."
+                "Every time I press the shutter, I am not merely capturing an image — I am creating a potential ambassador for a species, a habitat, a moment in time that may not exist much longer."
               </blockquote>
               <p className="text-amber-500 text-xs tracking-[0.3em] uppercase mt-6 font-medium">— Koushik Chatterjee</p>
 
               <div className="mt-12 space-y-6">
                 {[
                   { label: "Based in", value: "Kolkata, India" },
-                  { label: "Active since", value: "2009" },
-                  { label: "Speciality", value: "Wildlife & Marine" },
+                  { label: "Active since", value: "2008" },
+                  { label: "Speciality", value: "Wildlife & Conservation" },
                   { label: "Camera", value: "Canon EOS R5 / R3" },
                 ].map((item) => (
                   <div key={item.label} className="border-b border-gray-100 pb-4">
@@ -63,18 +63,35 @@ export default function About() {
             <p>
               I am Koushik Chatterjee — a wildlife photographer, visual storyteller and conservation advocate based in Kolkata, India. For over fifteen years, I have travelled to the farthest corners of the earth in pursuit of authentic, intimate moments with the natural world.
             </p>
+
+            <h3 className="text-2xl text-gray-900 font-medium pt-6" style={{ fontFamily: "Playfair Display, serif" }}>
+              The Journey
+            </h3>
             <p>
-              My passion for wildlife began in the forests of West Bengal, where childhood visits to Sundarbans ignited a lifelong fascination with tigers and the mangrove ecosystem. Armed with a borrowed camera and an overwhelming curiosity, I began photographing birds, reptiles and mammals in the forests of India before expanding my travels across Africa, Southeast Asia, the Americas and beyond.
+              My romance with light began in my grandfather's film studio, where I was spellbound by the darkroom's quiet alchemy — the amber glow of safelights, the ritual of chemical baths, and the strange sorcery of pinhole cameras turning passing light into permanent memory.
             </p>
             <p>
-              Today, my work has taken me to 47 countries, where I have photographed over 850 species. My images have been recognised in some of the world's most prestigious wildlife photography competitions, including the Wildlife Photographer of the Year (Natural History Museum, London), the BigPicture Natural World Photography Competition, the International Photography Awards, and many others.
+              My father, sensing this early fixation, placed a <strong>Pentax analog camera</strong> in my hands. Film imposed a stern discipline: every frame demanded intent, each mistake was irretrievable. Years later, during college, he gave me a <strong>Fujifilm prosumer camera</strong> — a leap that recalibrated my eye for focus, light, and narrative composition. I spent those formative years in Kolkata's photography circles, absorbing the distinct dialects of street, documentary, abstract, and architectural work.
+            </p>
+            <p>
+              Then came the inflection points. <strong>Rocco Saya</strong>, a friend I met through Orkut, gifted me my first DSLR — a <strong>Canon Rebel T2i</strong>. It was more than equipment; it was a recalibration of creative intent. Soon after, I met <strong>Raymond Gehman</strong>, a veteran <em>National Geographic</em> photographer, who taught me the <em>Nat Geo</em> way of seeing: how to frame with cinematic scope, to anticipate the decisive moment before it arrives, and to think in layers — subject, context, light, and story — all at once. The rest is history.
+            </p>
+
+            <h3 className="text-2xl text-gray-900 font-medium pt-6" style={{ fontFamily: "Playfair Display, serif" }}>
+              Why Wildlife?
+            </h3>
+            <p>
+              I chose wildlife photography not as a career path, but as a calling. I have loved nature deeply since childhood, and the forests of India were my first classroom. For over a decade, I immersed myself in Indian forests — studying animal behavior, decoding seasonal rhythms, and understanding the invisible threads that connect every living thing. I learned that a tiger's movement is dictated by monsoon patterns, that bird migrations signal shifting ecosystems, that every species is a chapter in a larger story.
+            </p>
+            <p>
+              Only after a decade of listening to the Indian wilderness did I step beyond its borders — first to Africa, then to Southeast Asia, the Americas, and beyond. Today, my work has taken me to <strong>47 countries</strong>, where I have photographed over <strong>850 species</strong>. My images have been recognized by the <strong>Wildlife Photographer of the Year</strong> (Natural History Museum, London), the <strong>BigPicture Natural World Photography Competition</strong>, the <strong>International Photography Awards</strong>, and other prestigious platforms.
             </p>
 
             <h3 className="text-2xl text-gray-900 font-medium pt-6" style={{ fontFamily: "Playfair Display, serif" }}>
               Philosophy & Approach
             </h3>
             <p>
-              I believe wildlife photography carries a profound responsibility. Every time I press the shutter, I am not merely capturing an image — I am creating a potential ambassador for a species, a habitat, a moment in time that may not exist much longer. This belief drives me to maintain the highest ethical standards in the field: no bait, no lure, no disturbance. Patience, respect and humility are my most important tools.
+              I believe wildlife photography carries a profound responsibility. Every time I press the shutter, I am not merely capturing an image — I am creating a potential ambassador for a species, a habitat, a moment in time that may not exist much longer. This belief drives me to maintain the highest ethical standards in the field: <strong>no bait, no lure, no disturbance.</strong> Patience, respect and humility are my most important tools.
             </p>
             <p>
               I spend extensive time in each location, often returning across multiple seasons to truly understand animal behaviour, light patterns and habitat. This investment of time — sometimes weeks or months — is what separates a snapshot from a genuine portrait of wild nature.
@@ -84,7 +101,10 @@ export default function About() {
               Conservation Commitment
             </h3>
             <p>
-              Photography without purpose is decoration. A portion of every print sale, licensing fee and commissioned project is donated directly to frontline conservation organisations including the WWF India Tiger Programme, the African Wildlife Foundation, and several community-based conservation initiatives across Sub-Saharan Africa.
+              Photography without purpose is merely decoration. A portion of every print sale, licensing fee and commissioned project is donated directly to frontline conservation organisations.
+            </p>
+            <p>
+              I am closely associated with the <strong>Giraffe Conservation Foundation</strong> — the only NGO solely dedicated to the conservation and management of giraffe in the wild; the <strong>Mara Predator Conservation Programme</strong> — dedicated to lions, cheetahs, and wild dogs in Kenya's Greater Mara Ecosystem; and the <strong>Ol Pejeta Conservancy</strong> — a model of community-first conservation in Kenya, home to the last two northern white rhinos on Earth.
             </p>
             <p>
               I also work closely with local guides, anti-poaching units and community rangers in the regions I photograph, believing that sustainable conservation must engage and empower local communities to be truly effective.
@@ -94,7 +114,7 @@ export default function About() {
               Publications & Media
             </h3>
             <p>
-              My photographs have been published in National Geographic, BBC Wildlife Magazine, Outdoor Photographer, Nature TTL, GEO Germany, and numerous books and conservation reports. I am a regular speaker at photography festivals and conservation conferences, sharing both technical knowledge and the deeper story behind the frame.
+              My photographs have been published in <strong>National Geographic</strong>, <strong>BBC Wildlife Magazine</strong>, <strong>Smithsonian Magazine</strong>, <strong>Vogue</strong>, <strong>Outlook India</strong>, <strong>Outdoor Photographer</strong>, <strong>Nature TTL</strong>, <strong>GEO Germany</strong>, and numerous books and conservation reports. I am a regular speaker at photography festivals and conservation conferences, sharing both technical knowledge and the deeper story behind the frame.
             </p>
 
             <div className="pt-8">
@@ -112,9 +132,9 @@ export default function About() {
 
       {/* Image Row — full bleed */}
       <div className="grid grid-cols-3 h-64 lg:h-80">
-        <img src="https://images.pexels.com/photos/19281386/pexels-photo-19281386.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=600" alt="" className="w-full h-full object-cover" />
-        <img src="https://images.pexels.com/photos/37202118/pexels-photo-37202118.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=600" alt="" className="w-full h-full object-cover" />
-        <img src="https://images.pexels.com/photos/35023115/pexels-photo-35023115.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=600" alt="" className="w-full h-full object-cover" />
+        <img src="https://images.pexels.com/photos/19281386/pexels-photo-19281386.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=600" alt="Wildlife portrait" className="w-full h-full object-cover" />
+        <img src="https://images.pexels.com/photos/37202118/pexels-photo-37202118.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=600" alt="Forest landscape" className="w-full h-full object-cover" />
+        <img src="https://images.pexels.com/photos/35023115/pexels-photo-35023115.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=600" alt="Nature detail" className="w-full h-full object-cover" />
       </div>
 
       {/* Skills / Gear */}

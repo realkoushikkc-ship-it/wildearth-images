@@ -44,10 +44,10 @@ export default function About() {
 
               <div className="mt-12 space-y-6">
                 {[
-                  { label: "Based in", value: "Kolkata, India" },
-                  { label: "Active since", value: "2008" },
-                  { label: "Speciality", value: "Wildlife & Conservation" },
-                  { label: "Camera", value: "Canon EOS R5 / R3" },
+                  { label: "Based in", value: "Bengaluru, India" },
+                  { label: "Active since", value: "1996" },
+                  { label: "Speciality", value: "Wildlife & Conservation & Travel" },
+                  { label: "Camera", value: "Nikon Z9 / D850 / D7500" },
                 ].map((item) => (
                   <div key={item.label} className="border-b border-gray-100 pb-4">
                     <p className="text-gray-400 text-xs tracking-[0.2em] uppercase mb-1">{item.label}</p>
@@ -144,15 +144,38 @@ export default function About() {
             {[
               {
                 title: "Equipment",
-                items: ["Canon EOS R5 Mark II", "Canon EOS R3", "Canon RF 600mm f/4L", "Canon RF 100-500mm", "Canon RF 16-35mm f/2.8L", "Gitzo GT5543LS Tripod", "Manfrotto fluid heads"],
+                items: [
+                  "Nikon Z9",
+                  "Nikon D850",
+                  "Nikon D7500",
+                  "Nikon AF-S 16-35mm f/4G ED VR",
+                  "Nikon AF-S 24-70mm f/2.8E ED VR",
+                  "Nikon AF-S 70-200mm f/2.8E FL ED VR",
+                  "Nikon AF-S 200-500mm f/5.6E ED VR",
+                  "Nikon AF-S 500mm f/5.6E PF ED VR",
+                  "Manfrotto 055 Carbon Fiber 4-Section Tripod (MT055CXPRO4)",
+                  "Wimberley WH-200 Gimbal Head",
+                ],
               },
               {
                 title: "Specialisms",
-                items: ["Mammal behaviour", "Avian flight photography", "Underwater photography", "Night & low-light wildlife", "Conservation documentary", "Fine art printing", "Expedition photography"],
+                items: [
+                  "Mammal behaviour",
+                  "Avian flight photography",
+                  "Night & low-light wildlife",
+                  "Conservation documentary",
+                  "Fine art printing",
+                  "Expedition photography",
+                ],
               },
               {
                 title: "Field Experience",
-                items: ["East & Southern Africa", "Indian Subcontinent", "Southeast Asia", "Amazon Rainforest", "Arctic & Sub-Arctic", "Indian & Pacific Ocean", "European wilderness"],
+                items: [
+                  "East Africa",
+                  "Indian Subcontinent",
+                  "Amazon Rainforest",
+                  "Indian & Pacific Ocean",
+                ],
               },
             ].map((col) => (
               <div key={col.title}>

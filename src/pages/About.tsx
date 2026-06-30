@@ -175,7 +175,6 @@ export default function About() {
                 items: [
                   "East Africa",
                   "Indian Subcontinent",
-                  "Amazon Rainforest",
                   "Indian & Pacific Ocean",
                 ],
               },

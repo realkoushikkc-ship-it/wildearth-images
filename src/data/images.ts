@@ -1,8 +1,8 @@
 export const heroSlides = [
   {
-    url: "https://images.pexels.com/photos/9185432/pexels-photo-9185432.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=1080&w=1920",
-    title: "Serengeti Harmony",
-    location: "Serengeti, Tanzania",
+    url: "https://i.postimg.cc/zfTpJpgg/IMG-03.png",
+    title: "Wildebeest Migration",
+    location: "Mara River, Masai Mara,Kenya",
     brightness: "light", // light means dark text needed → we use white always since bg is dark
   },
   {

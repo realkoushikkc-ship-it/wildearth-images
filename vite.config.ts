@@ -10,7 +10,7 @@ const __dirname = path.dirname(__filename);
 
 export default defineConfig({
   plugins: [react(), tailwindcss(), viteSingleFile()],
-  base: '/wildearth-images/',        // <-- ADD THIS LINE HERE
+  base: './',        // <-- ADD THIS LINE HERE
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "src"),

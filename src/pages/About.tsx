@@ -84,7 +84,7 @@ export default function About() {
               I chose wildlife photography not as a career path, but as a calling. I have loved nature deeply since childhood, and the forests of India were my first classroom. For over a decade, I immersed myself in Indian forests — studying animal behavior, decoding seasonal rhythms, and understanding the invisible threads that connect every living thing. I learned that a tiger's movement is dictated by monsoon patterns, that bird migrations signal shifting ecosystems, that every species is a chapter in a larger story.
             </p>
             <p>
-              Only after a decade of listening to the Indian wilderness did I step beyond its borders — first to Africa, then to Southeast Asia, the Americas, and beyond. Today, my work has taken me to <strong>47 countries</strong>, where I have photographed over <strong>850 species</strong>. My images have been recognized by the <strong>Wildlife Photographer of the Year</strong> (Natural History Museum, London), the <strong>BigPicture Natural World Photography Competition</strong>, the <strong>International Photography Awards</strong>, and other prestigious platforms.
+              Only after a decade of listening to the Indian wilderness did I step beyond its borders — first to Africa, then to Southeast Asia, the Americas, and beyond. Today, my work has taken me to <strong>3 countries</strong>, where I have photographed over <strong>850 species</strong>. My images have been recognized by the <strong>35Awards</strong>, the <strong>TopPhotoAward</strong>, and other prestigious platforms.
             </p>
 
             <h3 className="text-2xl text-gray-900 font-medium pt-6" style={{ fontFamily: "Playfair Display, serif" }}>
@@ -114,7 +114,7 @@ export default function About() {
               Publications & Media
             </h3>
             <p>
-              My photographs have been published in <strong>National Geographic</strong>, <strong>BBC Wildlife Magazine</strong>, <strong>Smithsonian Magazine</strong>, <strong>Vogue</strong>, <strong>Outlook India</strong>, <strong>Outdoor Photographer</strong>, <strong>Nature TTL</strong>, <strong>GEO Germany</strong>, and numerous books and conservation reports. I am a regular speaker at photography festivals and conservation conferences, sharing both technical knowledge and the deeper story behind the frame.
+              My photographs have been published in <strong>Smithsonian Magazine</strong>, <strong>Vogue</strong>, <strong>Outlook India</strong>, <strong>The Drift</strong>, <strong>Born Free Foundation</strong>, and numerous books and conservation reports. I am a regular speaker at photography festivals and conservation conferences, sharing both technical knowledge and the deeper story behind the frame.
             </p>
 
             <div className="pt-8">
@@ -148,13 +148,14 @@ export default function About() {
                   "Nikon Z9",
                   "Nikon D850",
                   "Nikon D7500",
-                  "Nikon Z 400mm f/2.8 TC VR S",
-                  "Nikon Z 50mm f/1.8 S",
+                  "Nikon Z 20mm f/1.8 S",
+                  "Nikon Z 85mm f/1.8 S",
                   "Nikon AF-S 16-35mm f/4G ED VR",
                   "Nikon AF-S 24-70mm f/2.8E ED VR",
                   "Nikon AF-S 70-200mm f/2.8E FL ED VR",
-                  "Nikon AF-S 500mm f/5.6E PF ED VR",
-                  "Manfrotto 055 Carbon Fiber 4-Section Tripod (MT055CXPRO4)",
+                  "Nikon AF-S 200-500mm f/5.6E ED VR",
+                  "Nikon Z 400mm f/4.5 VR S",
+                  "Manfrotto 055 Carbon Fiber 4-Section Tripod",
                   "Wimberley WH-200 Gimbal Head",
                 ],
               },

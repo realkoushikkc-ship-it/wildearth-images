@@ -14,7 +14,6 @@ export default function BackgroundMusic({ src, initialVolume = 0.25 }: Backgroun
   const [hasInteracted, setHasInteracted] = useState(false);
   const [hasError, setHasError] = useState(false);
 
-  // Initialize audio
   useEffect(() => {
     const audio = new Audio(src);
     audio.loop = true;
@@ -34,7 +33,6 @@ export default function BackgroundMusic({ src, initialVolume = 0.25 }: Backgroun
     };
   }, [src, initialVolume]);
 
-  // Auto-play on first user interaction
   const tryAutoPlay = useCallback(() => {
     if (hasInteracted || !audioRef.current || hasError) return;
 
@@ -54,7 +52,6 @@ export default function BackgroundMusic({ src, initialVolume = 0.25 }: Backgroun
     return () => events.forEach((e) => document.removeEventListener(e, handler));
   }, [tryAutoPlay]);
 
-  // Update volume
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.volume = isMuted ? 0 : volume;

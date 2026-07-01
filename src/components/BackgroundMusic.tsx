@@ -1,58 +1,30 @@
 import { useState, useRef, useEffect, useCallback } from "react";
-import { Volume2, VolumeX, Music, Play, AlertCircle } from "lucide-react";
+import { Volume2, VolumeX, Music } from "lucide-react";
 
 interface BackgroundMusicProps {
   src: string;
   initialVolume?: number;
 }
 
-export default function BackgroundMusic({ src, initialVolume = 0.3 }: BackgroundMusicProps) {
+export default function BackgroundMusic({ src, initialVolume = 0.25 }: BackgroundMusicProps) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [volume, setVolume] = useState(initialVolume);
-  const [showPrompt, setShowPrompt] = useState(true);
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [hasInteracted, setHasInteracted] = useState(false);
+  const [hasError, setHasError] = useState(false);
 
-  // Initialize audio once on mount
+  // Initialize audio
   useEffect(() => {
-    console.log("[BackgroundMusic] Loading audio from:", src);
-    
-    const audio = new Audio();
+    const audio = new Audio(src);
     audio.loop = true;
-    audio.volume = volume;
+    audio.volume = initialVolume;
     audio.preload = "auto";
 
-    // Log all events for debugging
-    audio.addEventListener("loadstart", () => console.log("[Audio] loadstart"));
-    audio.addEventListener("progress", () => console.log("[Audio] progress"));
-    audio.addEventListener("canplay", () => {
-      console.log("[Audio] canplay - ready!");
-      setIsLoaded(true);
-    });
-    audio.addEventListener("canplaythrough", () => console.log("[Audio] canplaythrough"));
-    
-    audio.addEventListener("error", (e) => {
-      const audioEl = e.target as HTMLAudioElement;
-      let errorText = "Unknown error";
-      
-      switch (audioEl.error?.code) {
-        case 1: errorText = "MEDIA_ERR_ABORTED - Fetching aborted"; break;
-        case 2: errorText = "MEDIA_ERR_NETWORK - Network error"; break;
-        case 3: errorText = "MEDIA_ERR_DECODE - Decode error (file may be corrupted)"; break;
-        case 4: errorText = "MEDIA_ERR_SRC_NOT_SUPPORTED - Format not supported"; break;
-      }
-      
-      console.error("[Audio] ERROR:", errorText, "Code:", audioEl.error?.code);
-      setErrorMsg(errorText);
+    audio.addEventListener("error", () => {
+      setHasError(true);
     });
 
-    audio.addEventListener("stalled", () => console.log("[Audio] stalled"));
-    audio.addEventListener("suspend", () => console.log("[Audio] suspend"));
-
-    // Set source after adding listeners
-    audio.src = src;
     audioRef.current = audio;
 
     return () => {
@@ -60,181 +32,122 @@ export default function BackgroundMusic({ src, initialVolume = 0.3 }: Background
       audio.src = "";
       audioRef.current = null;
     };
-  }, [src, volume]);
+  }, [src, initialVolume]);
 
-  // Update volume when changed
+  // Auto-play on first user interaction (click, scroll, touch)
+  const tryAutoPlay = useCallback(() => {
+    if (hasInteracted || !audioRef.current || hasError) return;
+
+    setHasInteracted(true);
+    audioRef.current.volume = isMuted ? 0 : volume;
+
+    audioRef.current.play()
+      .then(() => setIsPlaying(true))
+      .catch(() => {
+        // Autoplay blocked, silently fail
+        setIsPlaying(false);
+      });
+  }, [hasInteracted, hasError, isMuted, volume]);
+
+  useEffect(() => {
+    const events = ["click", "scroll", "touchstart", "keydown"];
+    const handler = () => tryAutoPlay();
+
+    events.forEach((e) => document.addEventListener(e, handler, { once: true }));
+    return () => events.forEach((e) => document.removeEventListener(e, handler));
+  }, [tryAutoPlay]);
+
+  // Update volume when slider changes
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.volume = isMuted ? 0 : volume;
     }
   }, [volume, isMuted]);
 
-  const tryPlay = useCallback(async () => {
-    if (!audioRef.current || isPlaying) return;
-
-    try {
-      audioRef.current.volume = isMuted ? 0 : volume;
-      await audioRef.current.play();
-      setIsPlaying(true);
-      setShowPrompt(false);
-      console.log("[BackgroundMusic] Playing!");
-    } catch (err: any) {
-      console.error("[BackgroundMusic] Play failed:", err.message);
-    }
-  }, [isPlaying, isMuted, volume]);
-
-  // Listen for ANY click on the page to try autoplay
-  useEffect(() => {
-    const handleClick = () => {
-      if (!isPlaying && audioRef.current) {
-        tryPlay();
-      }
-    };
-
-    document.addEventListener("click", handleClick, { once: true });
-    return () => document.removeEventListener("click", handleClick);
-  }, [tryPlay, isPlaying]);
-
-  const togglePlay = async () => {
-    if (!audioRef.current) return;
+  const togglePlay = () => {
+    if (!audioRef.current || hasError) return;
 
     if (isPlaying) {
       audioRef.current.pause();
       setIsPlaying(false);
     } else {
-      try {
-        audioRef.current.volume = isMuted ? 0 : volume;
-        await audioRef.current.play();
-        setIsPlaying(true);
-        setShowPrompt(false);
-      } catch (err: any) {
-        console.error("[BackgroundMusic] Toggle play failed:", err.message);
-      }
+      audioRef.current.volume = isMuted ? 0 : volume;
+      audioRef.current.play()
+        .then(() => setIsPlaying(true))
+        .catch(() => setHasError(true));
     }
   };
 
   const toggleMute = () => {
-    setIsMuted((prev) => {
-      const newMuted = !prev;
-      if (audioRef.current) {
-        audioRef.current.volume = newMuted ? 0 : volume;
-      }
-      return newMuted;
-    });
+    const newMuted = !isMuted;
+    setIsMuted(newMuted);
+    if (audioRef.current) {
+      audioRef.current.volume = newMuted ? 0 : volume;
+    }
   };
 
   const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newVolume = parseFloat(e.target.value);
-    setVolume(newVolume);
-    if (newVolume > 0 && isMuted) {
+    const newVol = parseFloat(e.target.value);
+    setVolume(newVol);
+    if (newVol > 0 && isMuted) {
       setIsMuted(false);
-      if (audioRef.current) audioRef.current.volume = newVolume;
     }
   };
 
-  // Hide prompt after 8 seconds
-  useEffect(() => {
-    if (showPrompt && !isPlaying) {
-      const timer = setTimeout(() => setShowPrompt(false), 8000);
-      return () => clearTimeout(timer);
-    }
-  }, [showPrompt, isPlaying]);
-
-  // If there's an error, show it
-  if (errorMsg) {
+  if (hasError) {
     return (
       <div className="fixed bottom-6 right-6 z-[60]">
-        <div className="bg-red-500 text-white text-xs px-4 py-3 rounded-xl shadow-lg max-w-xs">
-          <div className="flex items-center gap-2 mb-1">
-            <AlertCircle size={14} />
-            <span className="font-medium">Audio Error</span>
-          </div>
-          <p className="text-white/80 text-[10px] leading-relaxed">{errorMsg}</p>
-          <p className="text-white/60 text-[9px] mt-1">Check browser console (F12) for details</p>
+        <div className="bg-red-500/90 text-white text-[10px] px-3 py-2 rounded-full shadow-lg">
+          Audio unavailable
         </div>
       </div>
     );
   }
 
   return (
-    <>
-      {/* Click anywhere prompt */}
-      {showPrompt && !isPlaying && (
-        <div 
-          className="fixed inset-0 z-[55] flex items-center justify-center bg-black/40 backdrop-blur-sm transition-opacity duration-500"
-          onClick={() => {
-            tryPlay();
-            setShowPrompt(false);
-          }}
+    <div className="fixed bottom-6 right-6 z-[60]">
+      <div className="flex items-center gap-2 bg-white/90 backdrop-blur-md rounded-full px-3 py-2 shadow-lg border border-gray-200/50">
+        {/* Play/Pause */}
+        <button
+          onClick={togglePlay}
+          className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 ${
+            isPlaying
+              ? "bg-amber-500 text-white"
+              : "bg-gray-100 text-gray-500 hover:bg-amber-100 hover:text-amber-600"
+          }`}
+          title={isPlaying ? "Pause" : "Play"}
         >
-          <div className="bg-white/95 backdrop-blur-md rounded-2xl px-8 py-6 shadow-2xl text-center max-w-sm mx-4 animate-fadeInUp">
-            <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Music size={28} className="text-amber-600" />
+          {isPlaying ? (
+            <div className="flex gap-[2px]">
+              <div className="w-[2px] h-2.5 bg-white animate-pulse" />
+              <div className="w-[2px] h-2.5 bg-white animate-pulse" style={{ animationDelay: "0.15s" }} />
+              <div className="w-[2px] h-2.5 bg-white animate-pulse" style={{ animationDelay: "0.3s" }} />
             </div>
-            <h3 className="text-gray-900 font-medium text-lg mb-2" style={{ fontFamily: "Playfair Display, serif" }}>
-              Ambient Experience
-            </h3>
-            <p className="text-gray-500 text-sm mb-4">
-              Click anywhere to begin your immersive wildlife journey with ambient sound.
-            </p>
-            <p className="text-gray-400 text-xs mb-3">
-              {isLoaded ? "Audio ready ✓" : "Loading audio..."}
-            </p>
-            <button className="bg-amber-500 text-white px-6 py-2 rounded-full text-sm tracking-wide hover:bg-amber-600 transition-colors">
-              Click to Start
-            </button>
-          </div>
-        </div>
-      )}
+          ) : (
+            <Music size={13} />
+          )}
+        </button>
 
-      {/* Floating Player */}
-      <div className="fixed bottom-6 right-6 z-[60]">
-        <div className="flex items-center gap-2 bg-white/95 backdrop-blur-md rounded-full px-4 py-2.5 shadow-lg border border-gray-200/50">
-          {/* Play/Pause */}
-          <button
-            onClick={togglePlay}
-            className={`w-9 h-9 rounded-full flex items-center justify-center transition-all duration-300 ${
-              isPlaying
-                ? "bg-amber-500 text-white"
-                : "bg-gray-100 text-gray-600 hover:bg-amber-100 hover:text-amber-600"
-            }`}
-            title={isPlaying ? "Pause" : "Play"}
-          >
-            {isPlaying ? (
-              <div className="flex gap-0.5">
-                <div className="w-0.5 h-3 bg-white animate-pulse" />
-                <div className="w-0.5 h-3 bg-white animate-pulse" style={{ animationDelay: "0.2s" }} />
-                <div className="w-0.5 h-3 bg-white animate-pulse" style={{ animationDelay: "0.4s" }} />
-              </div>
-            ) : (
-              <Play size={14} fill="currentColor" />
-            )}
-          </button>
+        {/* Mute */}
+        <button
+          onClick={toggleMute}
+          className={`text-gray-400 hover:text-amber-500 transition-colors ${isMuted ? "text-gray-300" : ""}`}
+          title={isMuted ? "Unmute" : "Mute"}
+        >
+          {isMuted ? <VolumeX size={14} /> : <Volume2 size={14} />}
+        </button>
 
-          {/* Mute */}
-          <button
-            onClick={toggleMute}
-            className={`text-gray-500 hover:text-amber-500 transition-colors ${isMuted ? "text-gray-300" : ""}`}
-            title={isMuted ? "Unmute" : "Mute"}
-          >
-            {isMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
-          </button>
-
-          {/* Volume Slider */}
-          <div className="w-16">
-            <input
-              type="range"
-              min="0"
-              max="1"
-              step="0.01"
-              value={isMuted ? 0 : volume}
-              onChange={handleVolumeChange}
-              className="w-full h-1 bg-gray-200 rounded-full appearance-none cursor-pointer"
-              style={{ accentColor: "#f59e0b" }}
-            />
-          </div>
-        </div>
+        {/* Volume Slider */}
+        <input
+          type="range"
+          min="0"
+          max="1"
+          step="0.05"
+          value={isMuted ? 0 : volume}
+          onChange={handleVolumeChange}
+          className="w-16 h-1 bg-gray-200 rounded-full appearance-none cursor-pointer accent-amber-500"
+        />
       </div>
-    </>
+    </div>
   );
 }

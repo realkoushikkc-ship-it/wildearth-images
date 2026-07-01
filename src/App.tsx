@@ -19,7 +19,10 @@ export default function App() {
     <HashRouter>
       <ScrollToTop />
       <Navbar isLight={isNavLight} />
-      <BackgroundMusic src="/music/ambient-nature.mp3" initialVolume={0.25} />
+      <BackgroundMusic 
+        src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=ambient-piano-amp-strings-10711.mp3" 
+        initialVolume={0.25} 
+      />
       <Routes>
         <Route 
           path="/" 

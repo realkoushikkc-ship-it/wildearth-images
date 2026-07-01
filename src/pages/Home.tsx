@@ -26,7 +26,7 @@ export default function Home({ onSlideChange }: HomeProps) {
       <section className="bg-[#0f0f0f] py-7 px-6 border-b border-white/5">
         <div className="max-w-screen-xl mx-auto flex flex-wrap items-center justify-center gap-8 lg:gap-16">
           <span className="text-white/20 text-[9px] tracking-[0.5em] uppercase font-light shrink-0">As Seen In</span>
-          {["Wildlife Photographer of the Year", "National Geographic", "BigPicture Awards", "Nature TTL", "BBC Wildlife Magazine"].map((item) => (
+          {["Air India", "Etihad Airways", "35Awards", "Outlook India"].map((item) => (
             <span key={item} className="text-white/35 text-[10px] tracking-[0.3em] uppercase font-light hover:text-white/70 transition-colors duration-300 cursor-default">
               {item}
             </span>

@@ -19,7 +19,10 @@ export default function App() {
     <HashRouter>
       <ScrollToTop />
       <Navbar isLight={isNavLight} />
-      <BackgroundMusic initialVolume={0.2} />
+      <BackgroundMusic 
+        src="https://upload.wikimedia.org/wikipedia/commons/8/8b/Kevin_MacLeod_-_Ambient_Space.mp3" 
+        initialVolume={0.25} 
+      />
       <Routes>
         <Route 
           path="/" 

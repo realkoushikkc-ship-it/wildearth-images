@@ -2,19 +2,25 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import HeroSlideshow from "../components/HeroSlideshow";
-import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { galleryCategories, blogPosts } from "../data/images";
 
-export default function Home() {
+interface HomeProps {
+  onSlideChange?: (imageUrl: string, isLight: boolean) => void;
+}
+
+export default function Home({ onSlideChange }: HomeProps) {
   const [navLight, setNavLight] = useState(true);
+
+  const handleBrightnessChange = (isLight: boolean) => {
+    setNavLight(isLight);
+    onSlideChange?.("", isLight);
+  };
 
   return (
     <div className="bg-white">
-      <Navbar isLight={navLight} />
-
       {/* HERO SLIDESHOW */}
-      <HeroSlideshow onBrightnessChange={setNavLight} />
+      <HeroSlideshow onBrightnessChange={handleBrightnessChange} />
 
       {/* FEATURED IN / INTRO STRIP */}
       <section className="bg-[#0f0f0f] py-7 px-6 border-b border-white/5">

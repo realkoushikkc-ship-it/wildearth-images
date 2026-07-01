@@ -34,7 +34,7 @@ export default function BackgroundMusic({ src, initialVolume = 0.25 }: Backgroun
     };
   }, [src, initialVolume]);
 
-  // Auto-play on first user interaction (click, scroll, touch)
+  // Auto-play on first user interaction
   const tryAutoPlay = useCallback(() => {
     if (hasInteracted || !audioRef.current || hasError) return;
 
@@ -43,10 +43,7 @@ export default function BackgroundMusic({ src, initialVolume = 0.25 }: Backgroun
 
     audioRef.current.play()
       .then(() => setIsPlaying(true))
-      .catch(() => {
-        // Autoplay blocked, silently fail
-        setIsPlaying(false);
-      });
+      .catch(() => setIsPlaying(false));
   }, [hasInteracted, hasError, isMuted, volume]);
 
   useEffect(() => {
@@ -57,7 +54,7 @@ export default function BackgroundMusic({ src, initialVolume = 0.25 }: Backgroun
     return () => events.forEach((e) => document.removeEventListener(e, handler));
   }, [tryAutoPlay]);
 
-  // Update volume when slider changes
+  // Update volume
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.volume = isMuted ? 0 : volume;
@@ -107,7 +104,6 @@ export default function BackgroundMusic({ src, initialVolume = 0.25 }: Backgroun
   return (
     <div className="fixed bottom-6 right-6 z-[60]">
       <div className="flex items-center gap-2 bg-white/90 backdrop-blur-md rounded-full px-3 py-2 shadow-lg border border-gray-200/50">
-        {/* Play/Pause */}
         <button
           onClick={togglePlay}
           className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 ${
@@ -128,7 +124,6 @@ export default function BackgroundMusic({ src, initialVolume = 0.25 }: Backgroun
           )}
         </button>
 
-        {/* Mute */}
         <button
           onClick={toggleMute}
           className={`text-gray-400 hover:text-amber-500 transition-colors ${isMuted ? "text-gray-300" : ""}`}
@@ -137,7 +132,6 @@ export default function BackgroundMusic({ src, initialVolume = 0.25 }: Backgroun
           {isMuted ? <VolumeX size={14} /> : <Volume2 size={14} />}
         </button>
 
-        {/* Volume Slider */}
         <input
           type="range"
           min="0"

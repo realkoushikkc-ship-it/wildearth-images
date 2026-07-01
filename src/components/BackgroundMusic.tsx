@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from "react";
-import { Volume2, VolumeX, Music, Play } from "lucide-react";
+import { Volume2, VolumeX, Music, Play, AlertCircle } from "lucide-react";
 
 interface BackgroundMusicProps {
   src: string;
@@ -12,24 +12,47 @@ export default function BackgroundMusic({ src, initialVolume = 0.3 }: Background
   const [isMuted, setIsMuted] = useState(false);
   const [volume, setVolume] = useState(initialVolume);
   const [showPrompt, setShowPrompt] = useState(true);
-  const [hasError, setHasError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   // Initialize audio once on mount
   useEffect(() => {
-    const audio = new Audio(src);
+    console.log("[BackgroundMusic] Loading audio from:", src);
+    
+    const audio = new Audio();
     audio.loop = true;
     audio.volume = volume;
     audio.preload = "auto";
 
-    audio.addEventListener("canplaythrough", () => {
-      console.log("Audio loaded and ready to play");
+    // Log all events for debugging
+    audio.addEventListener("loadstart", () => console.log("[Audio] loadstart"));
+    audio.addEventListener("progress", () => console.log("[Audio] progress"));
+    audio.addEventListener("canplay", () => {
+      console.log("[Audio] canplay - ready!");
+      setIsLoaded(true);
     });
-
+    audio.addEventListener("canplaythrough", () => console.log("[Audio] canplaythrough"));
+    
     audio.addEventListener("error", (e) => {
-      console.error("Audio error:", e);
-      setHasError(true);
+      const audioEl = e.target as HTMLAudioElement;
+      let errorText = "Unknown error";
+      
+      switch (audioEl.error?.code) {
+        case 1: errorText = "MEDIA_ERR_ABORTED - Fetching aborted"; break;
+        case 2: errorText = "MEDIA_ERR_NETWORK - Network error"; break;
+        case 3: errorText = "MEDIA_ERR_DECODE - Decode error (file may be corrupted)"; break;
+        case 4: errorText = "MEDIA_ERR_SRC_NOT_SUPPORTED - Format not supported"; break;
+      }
+      
+      console.error("[Audio] ERROR:", errorText, "Code:", audioEl.error?.code);
+      setErrorMsg(errorText);
     });
 
+    audio.addEventListener("stalled", () => console.log("[Audio] stalled"));
+    audio.addEventListener("suspend", () => console.log("[Audio] suspend"));
+
+    // Set source after adding listeners
+    audio.src = src;
     audioRef.current = audio;
 
     return () => {
@@ -37,7 +60,7 @@ export default function BackgroundMusic({ src, initialVolume = 0.3 }: Background
       audio.src = "";
       audioRef.current = null;
     };
-  }, [src]);
+  }, [src, volume]);
 
   // Update volume when changed
   useEffect(() => {
@@ -46,7 +69,6 @@ export default function BackgroundMusic({ src, initialVolume = 0.3 }: Background
     }
   }, [volume, isMuted]);
 
-  // Try to play on first user click anywhere on the page
   const tryPlay = useCallback(async () => {
     if (!audioRef.current || isPlaying) return;
 
@@ -55,9 +77,9 @@ export default function BackgroundMusic({ src, initialVolume = 0.3 }: Background
       await audioRef.current.play();
       setIsPlaying(true);
       setShowPrompt(false);
-      console.log("Music started playing");
-    } catch (err) {
-      console.log("Autoplay blocked, waiting for explicit click on button");
+      console.log("[BackgroundMusic] Playing!");
+    } catch (err: any) {
+      console.error("[BackgroundMusic] Play failed:", err.message);
     }
   }, [isPlaying, isMuted, volume]);
 
@@ -85,9 +107,8 @@ export default function BackgroundMusic({ src, initialVolume = 0.3 }: Background
         await audioRef.current.play();
         setIsPlaying(true);
         setShowPrompt(false);
-      } catch (err) {
-        console.error("Failed to play:", err);
-        setHasError(true);
+      } catch (err: any) {
+        console.error("[BackgroundMusic] Toggle play failed:", err.message);
       }
     }
   };
@@ -119,11 +140,17 @@ export default function BackgroundMusic({ src, initialVolume = 0.3 }: Background
     }
   }, [showPrompt, isPlaying]);
 
-  if (hasError) {
+  // If there's an error, show it
+  if (errorMsg) {
     return (
       <div className="fixed bottom-6 right-6 z-[60]">
-        <div className="bg-red-500 text-white text-xs px-3 py-2 rounded-full shadow-lg">
-          Audio Error
+        <div className="bg-red-500 text-white text-xs px-4 py-3 rounded-xl shadow-lg max-w-xs">
+          <div className="flex items-center gap-2 mb-1">
+            <AlertCircle size={14} />
+            <span className="font-medium">Audio Error</span>
+          </div>
+          <p className="text-white/80 text-[10px] leading-relaxed">{errorMsg}</p>
+          <p className="text-white/60 text-[9px] mt-1">Check browser console (F12) for details</p>
         </div>
       </div>
     );
@@ -149,6 +176,9 @@ export default function BackgroundMusic({ src, initialVolume = 0.3 }: Background
             </h3>
             <p className="text-gray-500 text-sm mb-4">
               Click anywhere to begin your immersive wildlife journey with ambient sound.
+            </p>
+            <p className="text-gray-400 text-xs mb-3">
+              {isLoaded ? "Audio ready ✓" : "Loading audio..."}
             </p>
             <button className="bg-amber-500 text-white px-6 py-2 rounded-full text-sm tracking-wide hover:bg-amber-600 transition-colors">
               Click to Start

@@ -2,81 +2,133 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { Volume2, VolumeX, Music } from "lucide-react";
 
 interface BackgroundMusicProps {
-  src: string;
   initialVolume?: number;
 }
 
-export default function BackgroundMusic({ src, initialVolume = 0.25 }: BackgroundMusicProps) {
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+export default function BackgroundMusic({ initialVolume = 0.2 }: BackgroundMusicProps) {
+  const audioContextRef = useRef<AudioContext | null>(null);
+  const oscillatorsRef = useRef<OscillatorNode[]>([]);
+  const gainNodeRef = useRef<GainNode | null>(null);
+  const lfoRef = useRef<OscillatorNode | null>(null);
+  const lfoGainRef = useRef<GainNode | null>(null);
+  
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [volume, setVolume] = useState(initialVolume);
   const [hasInteracted, setHasInteracted] = useState(false);
-  const [hasError, setHasError] = useState(false);
 
-  useEffect(() => {
-    const audio = new Audio(src);
-    audio.loop = true;
-    audio.volume = initialVolume;
-    audio.preload = "auto";
+  // Create rich ambient synth drone
+  const startAmbient = useCallback(() => {
+    if (audioContextRef.current) return;
 
-    audio.addEventListener("error", () => {
-      setHasError(true);
+    const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
+    audioContextRef.current = ctx;
+
+    // Master gain
+    const masterGain = ctx.createGain();
+    masterGain.gain.value = isMuted ? 0 : volume * 0.3;
+    masterGain.connect(ctx.destination);
+    gainNodeRef.current = masterGain;
+
+    // Ambient chord: D minor 9 add 11 - very cinematic, open, nature-like
+    // Frequencies: D2(73.42), A2(110), D3(146.83), F3(174.61), A3(220), E4(329.63)
+    const freqs = [73.42, 110, 146.83, 174.61, 220, 329.63];
+    const types: OscillatorType[] = ["sine", "sine", "triangle", "sine", "sine", "triangle"];
+    const gains = [0.25, 0.2, 0.15, 0.12, 0.1, 0.08];
+
+    freqs.forEach((freq, i) => {
+      const osc = ctx.createOscillator();
+      osc.type = types[i];
+      // Slight detune for warmth
+      osc.detune.value = (Math.random() - 0.5) * 10;
+      osc.frequency.value = freq;
+
+      const oscGain = ctx.createGain();
+      oscGain.gain.value = gains[i];
+
+      osc.connect(oscGain);
+      oscGain.connect(masterGain);
+      osc.start();
+      oscillatorsRef.current.push(osc);
     });
 
-    audioRef.current = audio;
+    // Subtle LFO for movement (breathing effect)
+    const lfo = ctx.createOscillator();
+    lfo.type = "sine";
+    lfo.frequency.value = 0.1; // Very slow
+    const lfoGain = ctx.createGain();
+    lfoGain.gain.value = 0.05;
+    lfo.connect(lfoGain);
+    lfoGain.connect(masterGain.gain);
+    lfo.start();
+    lfoRef.current = lfo;
+    lfoGainRef.current = lfoGain;
 
-    return () => {
-      audio.pause();
-      audio.src = "";
-      audioRef.current = null;
-    };
-  }, [src, initialVolume]);
+    setIsPlaying(true);
+  }, [isMuted, volume]);
 
+  const stopAmbient = useCallback(() => {
+    oscillatorsRef.current.forEach((osc) => {
+      try {
+        osc.stop();
+        osc.disconnect();
+      } catch {}
+    });
+    oscillatorsRef.current = [];
+
+    if (lfoRef.current) {
+      try {
+        lfoRef.current.stop();
+        lfoRef.current.disconnect();
+      } catch {}
+      lfoRef.current = null;
+    }
+
+    if (audioContextRef.current) {
+      try {
+        audioContextRef.current.close();
+      } catch {}
+      audioContextRef.current = null;
+    }
+    gainNodeRef.current = null;
+    lfoGainRef.current = null;
+    setIsPlaying(false);
+  }, []);
+
+  // Auto-start on first interaction
   const tryAutoPlay = useCallback(() => {
-    if (hasInteracted || !audioRef.current || hasError) return;
-
+    if (hasInteracted) return;
     setHasInteracted(true);
-    audioRef.current.volume = isMuted ? 0 : volume;
-
-    audioRef.current.play()
-      .then(() => setIsPlaying(true))
-      .catch(() => setIsPlaying(false));
-  }, [hasInteracted, hasError, isMuted, volume]);
+    startAmbient();
+  }, [hasInteracted, startAmbient]);
 
   useEffect(() => {
     const events = ["click", "scroll", "touchstart", "keydown"];
     const handler = () => tryAutoPlay();
-
     events.forEach((e) => document.addEventListener(e, handler, { once: true }));
     return () => events.forEach((e) => document.removeEventListener(e, handler));
   }, [tryAutoPlay]);
 
+  // Update volume
   useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.volume = isMuted ? 0 : volume;
+    if (gainNodeRef.current) {
+      gainNodeRef.current.gain.value = isMuted ? 0 : volume * 0.3;
     }
   }, [volume, isMuted]);
 
   const togglePlay = () => {
-    if (!audioRef.current || hasError) return;
-
     if (isPlaying) {
-      audioRef.current.pause();
-      setIsPlaying(false);
+      stopAmbient();
     } else {
-      audioRef.current.volume = isMuted ? 0 : volume;
-      audioRef.current.play()
-        .then(() => setIsPlaying(true))
-        .catch(() => setHasError(true));
+      startAmbient();
     }
   };
 
   const toggleMute = () => {
     const newMuted = !isMuted;
     setIsMuted(newMuted);
-    if (audioRef.current) {
-      audioRef.current.volume = newMuted ? 0 : volume;
+    if (gainNodeRef.current) {
+      gainNodeRef.current.gain.value = newMuted ? 0 : volume * 0.3;
     }
   };
 
@@ -87,16 +139,6 @@ export default function BackgroundMusic({ src, initialVolume = 0.25 }: Backgroun
       setIsMuted(false);
     }
   };
-
-  if (hasError) {
-    return (
-      <div className="fixed bottom-6 right-6 z-[60]">
-        <div className="bg-red-500/90 text-white text-[10px] px-3 py-2 rounded-full shadow-lg">
-          Audio unavailable
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="fixed bottom-6 right-6 z-[60]">

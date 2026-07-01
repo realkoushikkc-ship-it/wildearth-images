@@ -2,39 +2,49 @@ import { useState, useEffect, useCallback } from "react";
 import { heroSlides } from "../data/images";
 
 interface HeroSlideshowProps {
-  onBrightnessChange?: (isLight: boolean) => void;
+  /** Called when slide changes - passes current image URL and brightness */
+  onSlideChange?: (imageUrl: string, isLight: boolean) => void;
 }
 
-export default function HeroSlideshow({ onBrightnessChange }: HeroSlideshowProps) {
+export default function HeroSlideshow({ onSlideChange }: HeroSlideshowProps) {
   const [current, setCurrent] = useState(0);
   const [prev, setPrev] = useState<number | null>(null);
   const [transitioning, setTransitioning] = useState(false);
 
+  const notifyChange = useCallback(
+    (index: number) => {
+      const slide = heroSlides[index];
+      const isLight = slide.brightness === "light";
+      onSlideChange?.(slide.url, isLight);
+    },
+    [onSlideChange]
+  );
+
   const goToSlide = useCallback(
     (index: number) => {
-      if (transitioning) return;
+      if (transitioning || index === current) return;
       setTransitioning(true);
       setPrev(current);
       setCurrent(index);
-      const isLight = heroSlides[index].brightness === "light";
-      onBrightnessChange?.(isLight);
+      notifyChange(index);
       setTimeout(() => {
         setPrev(null);
         setTransitioning(false);
       }, 1200);
     },
-    [current, transitioning, onBrightnessChange]
+    [current, transitioning, notifyChange]
   );
 
   useEffect(() => {
-    // Set initial brightness
-    onBrightnessChange?.(heroSlides[0].brightness === "light");
+    // Set initial slide info
+    notifyChange(0);
+
     const interval = setInterval(() => {
       setCurrent((c) => {
         const next = (c + 1) % heroSlides.length;
         setPrev(c);
         setTransitioning(true);
-        onBrightnessChange?.(heroSlides[next].brightness === "light");
+        notifyChange(next);
         setTimeout(() => {
           setPrev(null);
           setTransitioning(false);
@@ -42,8 +52,9 @@ export default function HeroSlideshow({ onBrightnessChange }: HeroSlideshowProps
         return next;
       });
     }, 5500);
+
     return () => clearInterval(interval);
-  }, [onBrightnessChange]);
+  }, [notifyChange]);
 
   return (
     <div className="relative w-full h-screen overflow-hidden bg-black">
@@ -73,10 +84,7 @@ export default function HeroSlideshow({ onBrightnessChange }: HeroSlideshowProps
       <div className="absolute inset-0 z-10 flex flex-col justify-end pb-24 px-10 lg:px-20">
         <div className="max-w-screen-xl mx-auto w-full">
           {/* Slide info */}
-          <div
-            key={current}
-            className="animate-fadeInUp"
-          >
+          <div key={current} className="animate-fadeInUp">
             <p className="text-white/60 text-xs tracking-[0.4em] uppercase mb-3 font-light">
               {heroSlides[current].location}
             </p>

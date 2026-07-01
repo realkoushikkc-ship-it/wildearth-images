@@ -10,7 +10,6 @@ import Blog from "./pages/Blog";
 import Contact from "./pages/Contact";
 import ScrollToTop from "./components/ScrollToTop";
 import Navbar from "./components/Navbar";
-import BackgroundMusic from "./components/BackgroundMusic";
 
 export default function App() {
   const [isNavLight, setIsNavLight] = useState(false);
@@ -19,10 +18,6 @@ export default function App() {
     <HashRouter>
       <ScrollToTop />
       <Navbar isLight={isNavLight} />
-      <BackgroundMusic 
-        src="https://upload.wikimedia.org/wikipedia/commons/8/8b/Kevin_MacLeod_-_Ambient_Space.mp3" 
-        initialVolume={0.25} 
-      />
       <Routes>
         <Route 
           path="/" 

@@ -47,10 +47,10 @@ export default function Home({ onSlideChange }: HomeProps) {
               <em>One Frame at a Time</em>
             </h2>
             <p className="text-gray-500 text-base leading-relaxed mb-6">
-              "As a wildlife photographer and conservationist, I use photography and storytelling to share the extraordinary beauty of our planet's wildlife — helping bring people closer to nature while raising awareness of the species and habitats that urgently need our protection."
+              "I am Koushik Chatterjee — a wildlife photographer and visual storyteller driven by a deep love for the natural world. Through my lens, I seek to reveal the extraordinary beauty of our planet's wildlife, bringing people closer to nature while raising urgent awareness for the species and habitats that need our protection"
             </p>
             <p className="text-gray-400 text-sm leading-relaxed mb-10">
-              From the vast plains of the Masai Mara to the silent depths of the Indian Ocean, each image is the result of patient waiting, ethical practice, and a deep respect for the wild world. With over 15 years in the field across 47 countries, my work has been recognised by leading international competitions and published in major wildlife and conservation publications.
+              From the silent forests of India to the vast plains of Africa, each image is the result of patient waiting, ethical practice, and a deep respect for the wild world. With over fifteen years in the field and work recognised by 35Awards and TopPhotoAward, my photographs have appeared in Smithsonian Magazine, Vogue, and Outlook India.
             </p>
             <Link
               to="/about"

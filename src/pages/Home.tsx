@@ -62,7 +62,7 @@ export default function Home({ onSlideChange }: HomeProps) {
           </div>
           <div className="relative">
             <img
-              src="https://images.pexels.com/photos/29345317/pexels-photo-29345317.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=700&w=900"
+              src="https://i.postimg.cc/Ls8mzSqD/1000277000.jpg?auto=compress&cs=tinysrgb&fit=crop&h=700&w=900"
               alt="Koushik Chatterjee photographing wildlife"
               className="w-full h-[500px] object-cover"
             />

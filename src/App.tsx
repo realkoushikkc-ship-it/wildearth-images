@@ -20,7 +20,7 @@ export default function App() {
       <ScrollToTop />
       <Navbar isLight={isNavLight} />
       <BackgroundMusic 
-        src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=ambient-piano-amp-strings-10711.mp3" 
+        src="https://cdn.pixabay.com/download/audio/2022/03/24/audio_5e2f3d6d02.mp3?filename=relaxing-mountains-rivers-streams-birds-song-nature-sounds-8050.mp3" 
         initialVolume={0.25} 
       />
       <Routes>

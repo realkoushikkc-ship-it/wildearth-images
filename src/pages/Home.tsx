@@ -137,7 +137,7 @@ export default function Home({ onSlideChange }: HomeProps) {
       {/* SECTION 3: FULL-WIDTH FEATURE IMAGE — Simon Wantling editorial style */}
       <section className="relative h-[80vh] overflow-hidden">
         <img
-          src="https://images.pexels.com/photos/11760800/pexels-photo-11760800.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=1080&w=1920"
+          src="https://i.postimg.cc/GpmyZf2h/04.jpg?auto=compress&cs=tinysrgb&fit=crop&h=1080&w=1920"
           alt="African elephant at waterhole"
           className="w-full h-full object-cover"
         />
@@ -170,10 +170,10 @@ export default function Home({ onSlideChange }: HomeProps) {
         <div className="max-w-screen-xl mx-auto grid grid-cols-2 md:grid-cols-5 gap-8 text-center">
           {[
             { value: "15+", label: "Years Experience" },
-            { value: "850+", label: "Species Photographed" },
-            { value: "47", label: "Countries" },
-            { value: "36", label: "Awards Won" },
-            { value: "120+", label: "Exhibitions" },
+            { value: "350+", label: "Species Photographed" },
+            { value: "3", label: "Countries" },
+            { value: "13", label: "Awards Won" },
+            { value: "11+", label: "Exhibitions" },
           ].map((stat) => (
             <div key={stat.label}>
               <p className="text-amber-400 text-3xl lg:text-4xl font-bold mb-2" style={{ fontFamily: "Playfair Display, serif" }}>

@@ -3,8 +3,8 @@ import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 
 interface NavbarProps {
-  isLight?: boolean; // true = use white text (over dark images), false = use dark text (over light images)
-  forceTransparent?: boolean; // kept for API compatibility
+  /** true = image is LIGHT (use DARK text), false = image is DARK (use WHITE text) */
+  isLight?: boolean;
 }
 
 const navLinks = [
@@ -18,43 +18,44 @@ const navLinks = [
   { label: "Contact", path: "/contact" },
 ];
 
-export default function Navbar({ isLight = true, forceTransparent: _forceTransparent = false }: NavbarProps) {
+export default function Navbar({ isLight = false }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
 
+  // Handle scroll
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Close mobile menu on route change
   useEffect(() => {
     setMenuOpen(false);
   }, [location]);
 
   const isHome = location.pathname === "/";
-
-  // On home page: transparent + adaptive text color based on slide
-  // On other pages: solid white background with dark text
   const isTransparent = isHome && !scrolled;
 
+  // When transparent: adapt to image brightness
+  // When scrolled or non-home: always dark text on white background
   const textColor = isTransparent
     ? isLight
-      ? "text-white"
-      : "text-gray-900"
+      ? "text-gray-900"
+      : "text-white"
     : "text-gray-900";
 
   const logoColor = isTransparent
     ? isLight
-      ? "text-white"
-      : "text-gray-900"
+      ? "text-gray-900"
+      : "text-white"
     : "text-gray-900";
 
   const borderColor = isTransparent
     ? isLight
-      ? "border-white/20"
-      : "border-gray-900/20"
+      ? "border-gray-900/20"
+      : "border-white/20"
     : "border-gray-200";
 
   return (
@@ -67,16 +68,25 @@ export default function Navbar({ isLight = true, forceTransparent: _forceTranspa
         }`}
       >
         <div className="max-w-screen-2xl mx-auto px-6 lg:px-10">
-          <div className={`flex items-center justify-between h-20 border-b ${borderColor} transition-colors duration-500`}>
+          <div
+            className={`flex items-center justify-between h-20 border-b ${borderColor} transition-colors duration-500`}
+          >
             {/* Logo */}
             <Link to="/" className="flex flex-col leading-none group">
-              <span className={`text-xs tracking-[0.35em] uppercase font-light transition-colors duration-500 ${logoColor} opacity-70`}>
+              <span
+                className={`text-xs tracking-[0.35em] uppercase font-light transition-colors duration-500 ${logoColor} opacity-70`}
+              >
                 WildEarth Images
               </span>
-              <span className={`text-xl font-semibold tracking-wide transition-colors duration-500 ${logoColor}`} style={{ fontFamily: "Playfair Display, serif" }}>
+              <span
+                className={`text-xl font-semibold tracking-wide transition-colors duration-500 ${logoColor}`}
+                style={{ fontFamily: "Playfair Display, serif" }}
+              >
                 Koushik Chatterjee
               </span>
-              <span className={`text-[10px] tracking-[0.25em] uppercase font-light transition-colors duration-500 ${logoColor} opacity-50`}>
+              <span
+                className={`text-[10px] tracking-[0.25em] uppercase font-light transition-colors duration-500 ${logoColor} opacity-50`}
+              >
                 Wildlife · Travel · Conservation
               </span>
             </Link>
@@ -119,13 +129,20 @@ export default function Navbar({ isLight = true, forceTransparent: _forceTranspa
       {/* Mobile Menu */}
       <div
         className={`fixed inset-0 z-40 bg-black transition-all duration-500 ${
-          menuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+          menuOpen
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none"
         }`}
       >
         <div className="flex flex-col items-center justify-center h-full gap-8">
           <Link to="/" className="flex flex-col items-center leading-none mb-8">
-            <span className="text-xs tracking-[0.35em] uppercase font-light text-white/60">WildEarth Images</span>
-            <span className="text-3xl font-semibold tracking-wide text-white" style={{ fontFamily: "Playfair Display, serif" }}>
+            <span className="text-xs tracking-[0.35em] uppercase font-light text-white/60">
+              WildEarth Images
+            </span>
+            <span
+              className="text-3xl font-semibold tracking-wide text-white"
+              style={{ fontFamily: "Playfair Display, serif" }}
+            >
               Koushik Chatterjee
             </span>
           </Link>

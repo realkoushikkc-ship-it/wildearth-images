@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { HashRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import About from "./pages/About";
@@ -8,13 +9,24 @@ import Exhibitions from "./pages/Exhibitions";
 import Blog from "./pages/Blog";
 import Contact from "./pages/Contact";
 import ScrollToTop from "./components/ScrollToTop";
+import Navbar from "./components/Navbar";
 
 export default function App() {
+  const [isNavLight, setIsNavLight] = useState(false);
+
   return (
     <HashRouter>
       <ScrollToTop />
+      <Navbar isLight={isNavLight} />
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route 
+          path="/" 
+          element={
+            <Home 
+              onSlideChange={(_, isLight) => setIsNavLight(isLight)} 
+            />
+          } 
+        />
         <Route path="/about" element={<About />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/gallery/:categoryId" element={<Gallery />} />

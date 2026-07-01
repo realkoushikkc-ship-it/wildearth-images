@@ -23,16 +23,16 @@ export default function Home({ onSlideChange }: HomeProps) {
       <HeroSlideshow onBrightnessChange={handleBrightnessChange} />
 
       {/* FEATURED IN / INTRO STRIP */}
-      <section className="bg-[#0f0f0f] py-7 px-6 border-b border-white/5">
-        <div className="max-w-screen-xl mx-auto flex flex-wrap items-center justify-center gap-8 lg:gap-16">
-          <span className="text-white/20 text-[9px] tracking-[0.5em] uppercase font-light shrink-0">As Seen In</span>
-          {["Air India", "Etihad Airways", "35Awards", "Outlook India"].map((item) => (
-            <span key={item} className="text-white/35 text-[10px] tracking-[0.3em] uppercase font-light hover:text-white/70 transition-colors duration-300 cursor-default">
-              {item}
-            </span>
-          ))}
-        </div>
-      </section>
+<section className="bg-[#0f0f0f] py-7 px-6 border-b border-white/5">
+  <div className="max-w-screen-xl mx-auto flex flex-wrap items-center justify-center gap-8 lg:gap-16">
+    <span className="text-white/60 text-xs tracking-[0.5em] uppercase font-light shrink-0">As Seen In</span>
+    {["Air India", "Etihad Airways", "35Awards", "Outlook India"].map((item) => (
+      <span key={item} className="text-white/80 text-sm tracking-[0.3em] uppercase font-light hover:text-white transition-colors duration-300 cursor-default">
+        {item}
+      </span>
+    ))}
+  </div>
+</section>
 
       {/* SECTION 1: INTRO — Simon Wantling style full-width editorial */}
       <section className="py-24 px-6 lg:px-20 max-w-screen-xl mx-auto">

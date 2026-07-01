@@ -20,7 +20,7 @@ export default function App() {
       <ScrollToTop />
       <Navbar isLight={isNavLight} />
       <BackgroundMusic 
-        src="https://cdn.pixabay.com/download/audio/2023/10/25/audio_9b0f5e2d3f.mp3?filename=epic-cinematic-ambient-14546.mp3" 
+        src="https://assets.mixkit.co/music/preview/mixkit-tech-house-vibes-130.mp3" 
         initialVolume={0.25} 
       />
       <Routes>

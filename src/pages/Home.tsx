@@ -34,45 +34,55 @@ export default function Home({ onSlideChange }: HomeProps) {
   </div>
 </section>
 
-      {/* SECTION 1: INTRO — Simon Wantling style full-width editorial */}
-      <section className="py-24 px-6 lg:px-20 max-w-screen-xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <div>
-            <p className="text-amber-500 text-xs tracking-[0.4em] uppercase font-medium mb-4">Wildlife · Travel · Conservation</p>
-            <h2
-              className="text-4xl lg:text-5xl font-light text-gray-900 leading-tight mb-8"
-              style={{ fontFamily: "Playfair Display, serif" }}
-            >
-              Capturing the Wild,{" "}
-              <em>One Frame at a Time</em>
-            </h2>
-            <p className="text-gray-500 text-base leading-relaxed mb-6">
-              "I am Koushik Chatterjee — a wildlife photographer and visual storyteller driven by a deep love for the natural world. Through my lens, I seek to reveal the extraordinary beauty of our planet's wildlife, bringing people closer to nature while raising urgent awareness for the species and habitats that need our protection"
-            </p>
-            <p className="text-gray-400 text-sm leading-relaxed mb-10">
-              From the silent forests of India to the vast plains of Africa, each image is the result of patient waiting, ethical practice, and a deep respect for the wild world. With over fifteen years in the field and work recognised by 35Awards and TopPhotoAward, my photographs have appeared in Smithsonian Magazine, Vogue, and Outlook India.
-            </p>
-            <Link
-              to="/about"
-              className="inline-flex items-center gap-3 text-sm tracking-[0.2em] uppercase text-gray-900 border-b border-gray-900 pb-1 hover:text-amber-500 hover:border-amber-500 transition-all duration-300 group"
-            >
-              Learn more about me
-              <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform duration-300" />
-            </Link>
-          </div>
-          <div className="relative">
-            <img
-              src="https://i.postimg.cc/Ls8mzSqD/1000277000.jpg?auto=compress&cs=tinysrgb&fit=crop&h=700&w=900"
-              alt="Koushik Chatterjee photographing wildlife"
-              className="w-full h-[500px] object-cover"
-            />
-            <div className="absolute -bottom-6 -left-6 bg-amber-500 p-6 hidden lg:block">
-              <p className="text-black font-bold text-3xl leading-none">15+</p>
-              <p className="text-black/70 text-xs tracking-widest uppercase mt-1">Years in Field</p>
-            </div>
-          </div>
-        </div>
-      </section>
+     {/* SECTION 1: INTRO — Simon Wantling style full-width editorial */}
+<section className="py-24 px-6 lg:px-20 max-w-screen-xl mx-auto">
+  <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+    <div>
+      <p className="text-amber-500 text-xs tracking-[0.4em] uppercase font-medium mb-4">Wildlife · Travel · Conservation</p>
+      <h2
+        className="text-4xl lg:text-5xl font-light text-gray-900 leading-tight mb-8"
+        style={{ fontFamily: "Playfair Display, serif" }}
+      >
+        Capturing the Wild,{" "}
+        <em>One Frame at a Time</em>
+      </h2>
+      <p className="text-gray-500 text-base leading-relaxed mb-6">
+        "I am Koushik Chatterjee — a wildlife photographer and visual storyteller driven by a deep love for the natural world. Through my lens, I seek to reveal the extraordinary beauty of our planet's wildlife, bringing people closer to nature while raising urgent awareness for the species and habitats that need our protection"
+      </p>
+      <p className="text-gray-400 text-sm leading-relaxed mb-10">
+        From the silent forests of India to the vast plains of Africa, each image is the result of patient waiting, ethical practice, and a deep respect for the wild world. With over fifteen years in the field and work recognised by 35Awards and TopPhotoAward, my photographs have appeared in Smithsonian Magazine, Vogue, and Outlook India.
+      </p>
+      <Link
+        to="/about"
+        className="inline-flex items-center gap-3 text-sm tracking-[0.2em] uppercase text-gray-900 border-b border-gray-900 pb-1 hover:text-amber-500 hover:border-amber-500 transition-all duration-300 group"
+      >
+        Learn more about me
+        <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform duration-300" />
+      </Link>
+    </div>
+    <div className="relative">
+      <img
+        src="https://i.postimg.cc/Ls8mzSqD/1000277000.jpg?auto=compress&cs=tinysrgb&fit=crop&h=700&w=900"
+        alt="Koushik Chatterjee photographing wildlife"
+        className="w-full h-[500px] object-cover"
+      />
+      {/* Bottom left badge */}
+      <div className="absolute -bottom-6 -left-6 bg-amber-500 p-6 hidden lg:block">
+        <p className="text-black font-bold text-3xl leading-none">15+</p>
+        <p className="text-black/70 text-xs tracking-widest uppercase mt-1">Years in Field</p>
+      </div>
+      {/* Bottom right badge */}
+      <div className="absolute -bottom-6 -right-6 bg-gray-900 p-6 hidden lg:block">
+        <img 
+          src="https://i.postimg.cc/P5q5wFS5/frmt.png" 
+          alt="Formatt Hitect" 
+          className="h-8 w-auto object-contain mb-2" 
+        />
+        <p className="text-white/70 text-xs tracking-widest uppercase">Official Partner</p>
+      </div>
+    </div>
+  </div>
+</section>
 
       {/* SECTION 2: GALLERY CATEGORIES — Andy Rouse 3-col grid style */}
       <section className="py-20 bg-[#f8f7f4]">

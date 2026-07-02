@@ -72,14 +72,14 @@ export default function Home({ onSlideChange }: HomeProps) {
         <p className="text-black/70 text-xs tracking-widest uppercase mt-1">Years in Field</p>
       </div>
       {/* Bottom right badge */}
-      <div className="absolute -bottom-6 -right-6 bg-gray-900 p-6 hidden lg:block">
-        <img 
-          src="https://i.postimg.cc/P5q5wFS5/frmt.png" 
-          alt="Formatt Hitect" 
-          className="h-8 w-auto object-contain mb-2" 
-        />
-        <p className="text-white/70 text-xs tracking-widest uppercase">Official Partner</p>
-      </div>
+<div className="absolute -bottom-6 -right-6 bg-white p-6 hidden lg:block shadow-lg">
+  <img 
+    src="https://i.postimg.cc/Z5x9hdCW/canon.png" 
+    alt="Canon" 
+    className="h-8 w-auto object-contain mb-2" 
+  />
+  <p className="text-gray-500 text-xs tracking-widest uppercase">Global Brand Ambassador</p>
+</div>
     </div>
   </div>
 </section>

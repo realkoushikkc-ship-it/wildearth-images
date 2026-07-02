@@ -5,21 +5,21 @@ import { brandCollaborators } from "../data/images";
 export default function Footer() {
   return (
     <footer className="bg-[#0a0a0a] text-white">
-      {/* Brand Collaborations Band */}
-      <div className="border-t border-white/10 py-10 px-6">
+      {/* Brand Collaborations Band — WHITE SECTION */}
+      <div className="bg-white border-t border-gray-200 py-10 px-6">
         <div className="max-w-screen-xl mx-auto">
-          <p className="text-center text-xs tracking-[0.35em] uppercase text-white/40 mb-8">Brand Collaborations & Partners</p>
+          <p className="text-center text-xs tracking-[0.35em] uppercase text-gray-500 mb-8">Brand Collaborations & Partners</p>
           <div className="flex flex-wrap items-center justify-center gap-10 lg:gap-16">
             {brandCollaborators.map((brand) => {
               const isImage = typeof brand.logo === "string" && brand.logo.indexOf("http") === 0;
               return (
-                <div key={brand.name} className="flex flex-col items-center gap-2 opacity-50 hover:opacity-100 transition-opacity duration-300 cursor-pointer">
+                <div key={brand.name} className="flex flex-col items-center gap-2 opacity-70 hover:opacity-100 transition-opacity duration-300 cursor-pointer">
                   {isImage ? (
                     <img src={brand.logo} alt={brand.name} className="h-6 w-auto object-contain" />
                   ) : (
                     <span className="text-3xl">{brand.logo}</span>
                   )}
-                  <span className="text-[10px] tracking-[0.2em] uppercase text-white/60 font-light">{brand.name}</span>
+                  <span className="text-[10px] tracking-[0.2em] uppercase text-gray-800 font-light">{brand.name}</span>
                 </div>
               );
             })}

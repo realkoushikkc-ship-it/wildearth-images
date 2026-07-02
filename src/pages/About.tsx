@@ -8,12 +8,12 @@ export default function About() {
     <div className="bg-white">
       <Navbar isLight={false} forceTransparent={false} />
 
-      {/* Hero */}
-<div className="relative min-h-[85vh] overflow-hidden">
+    {/* Hero */}
+<div className="relative h-[70vh] overflow-hidden">
   <img
     src="https://i.postimg.cc/T3ww9C6d/FB-IMG-1782990894550.jpg?auto=compress&cs=tinysrgb&fit=crop&h=900&w=1600"
     alt="Koushik Chatterjee"
-    className="w-full h-full object-cover object-bottom"
+    className="w-full h-full object-cover object-[center_65%]"
   />
   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
   <div className="absolute bottom-0 left-0 right-0 p-10 lg:p-20">
@@ -26,7 +26,8 @@ export default function About() {
     </h1>
   </div>
 </div>
-      {/* Bio Section */}
+
+          {/* Bio Section */}
       <section className="py-20 px-6 lg:px-20">
         <div className="max-w-screen-xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-16">
           {/* Pull quote */}

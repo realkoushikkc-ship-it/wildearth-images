@@ -1,7 +1,7 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { awardsData } from "../data/images";
-
+ 
 const resultColors: Record<string, string> = {
   Winner: "bg-amber-400 text-black",
   "Gold Medal": "bg-amber-400 text-black",

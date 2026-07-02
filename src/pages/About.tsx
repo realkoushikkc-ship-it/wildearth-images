@@ -13,7 +13,7 @@ export default function About() {
   <img
     src="https://i.postimg.cc/T3ww9C6d/FB-IMG-1782990894550.jpg?auto=compress&cs=tinysrgb&fit=crop&h=900&w=1600"
     alt="Koushik Chatterjee"
-    className="w-full h-full object-cover object-[center_65%]"
+    className="w-full h-full object-cover object-[center_70%]"
   />
   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
   <div className="absolute bottom-0 left-0 right-0 p-10 lg:p-20">

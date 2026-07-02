@@ -10,16 +10,19 @@ export default function Footer() {
         <div className="max-w-screen-xl mx-auto">
           <p className="text-center text-xs tracking-[0.35em] uppercase text-white/40 mb-8">Brand Collaborations & Partners</p>
           <div className="flex flex-wrap items-center justify-center gap-10 lg:gap-16">
-            {brandCollaborators.map((brand) => (
-              <div key={brand.name} className="flex flex-col items-center gap-2 opacity-50 hover:opacity-100 transition-opacity duration-300 cursor-pointer">
-                {brand.logo.startsWith("http") ? (
-                  <img src={brand.logo} alt={brand.name} className="h-6 w-auto object-contain" />
-                ) : (
-                  <span className="text-3xl">{brand.logo}</span>
-                )}
-                <span className="text-[10px] tracking-[0.2em] uppercase text-white/60 font-light">{brand.name}</span>
-              </div>
-            ))}
+            {brandCollaborators.map((brand) => {
+              const isImage = typeof brand.logo === "string" && brand.logo.indexOf("http") === 0;
+              return (
+                <div key={brand.name} className="flex flex-col items-center gap-2 opacity-50 hover:opacity-100 transition-opacity duration-300 cursor-pointer">
+                  {isImage ? (
+                    <img src={brand.logo} alt={brand.name} className="h-6 w-auto object-contain" />
+                  ) : (
+                    <span className="text-3xl">{brand.logo}</span>
+                  )}
+                  <span className="text-[10px] tracking-[0.2em] uppercase text-white/60 font-light">{brand.name}</span>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

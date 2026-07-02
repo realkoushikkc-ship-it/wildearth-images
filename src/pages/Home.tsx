@@ -74,7 +74,7 @@ export default function Home({ onSlideChange }: HomeProps) {
       {/* Bottom right badge */}
 <div className="absolute -bottom-6 -right-6 bg-white p-6 hidden lg:block shadow-lg">
   <img 
-    src="https://i.postimg.cc/Z5x9hdCW/canon.png" 
+    src="https://i.postimg.cc/P5q5wFS5/frmt.png" 
     alt="Canon" 
     className="h-8 w-auto object-contain mb-2" 
   />

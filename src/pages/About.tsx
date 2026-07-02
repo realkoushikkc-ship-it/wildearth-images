@@ -2,7 +2,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
- 
+
 export default function About() {
   return (
     <div className="bg-white">

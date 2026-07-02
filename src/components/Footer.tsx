@@ -12,7 +12,11 @@ export default function Footer() {
           <div className="flex flex-wrap items-center justify-center gap-10 lg:gap-16">
             {brandCollaborators.map((brand) => (
               <div key={brand.name} className="flex flex-col items-center gap-2 opacity-50 hover:opacity-100 transition-opacity duration-300 cursor-pointer">
-                <span className="text-3xl">{brand.logo}</span>
+                {brand.logo.startsWith("http") ? (
+                  <img src={brand.logo} alt={brand.name} className="h-6 w-auto object-contain" />
+                ) : (
+                  <span className="text-3xl">{brand.logo}</span>
+                )}
                 <span className="text-[10px] tracking-[0.2em] uppercase text-white/60 font-light">{brand.name}</span>
               </div>
             ))}

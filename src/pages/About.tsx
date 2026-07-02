@@ -131,11 +131,11 @@ export default function About() {
       </section>
 
       {/* Image Row — full bleed */}
-      <div className="grid grid-cols-3 h-64 lg:h-80">
-        <img src="https://i.postimg.cc/8kx7msdn/IMG-04.png?auto=compress&cs=tinysrgb&fit=crop&h=400&w=600" alt="Wildlife portrait" className="w-full h-full object-cover" />
-        <img src="https://i.postimg.cc/Vs2JW5BY/IMG-06.png?auto=compress&cs=tinysrgb&fit=crop&h=400&w=600" alt="Forest landscape" className="w-full h-full object-cover" />
-        <img src="https://i.postimg.cc/VLMdG1DC/IMG-15.jpg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=600" alt="Nature detail" className="w-full h-full object-cover" />
-      </div>
+     <div className="grid grid-cols-3 h-64 lg:h-80 overflow-hidden bg-black">
+  <img src="https://i.postimg.cc/8kx7msdn/IMG-04.png?auto=compress&cs=tinysrgb&fit=crop&h=400&w=600" alt="Wildlife portrait" className="w-full h-full object-contain" />
+  <img src="https://i.postimg.cc/Vs2JW5BY/IMG-06.png?auto=compress&cs=tinysrgb&fit=crop&h=400&w=600" alt="Forest landscape" className="w-full h-full object-contain" />
+  <img src="https://i.postimg.cc/VLMdG1DC/IMG-15.jpg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=600" alt="Nature detail" className="w-full h-full object-contain" />
+</div>
 
       {/* Skills / Gear */}
       <section className="py-20 px-6 lg:px-20 bg-[#f8f7f4]">

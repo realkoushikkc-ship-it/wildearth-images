@@ -45,7 +45,7 @@ export default function About() {
               <div className="mt-12 space-y-6">
                 {[
                   { label: "Based in", value: "Bengaluru, India" },
-                  { label: "Active since", value: "1996" },
+                  { label: "Active since", value: "2014" },
                   { label: "Speciality", value: "Wildlife & Conservation & Travel" },
                   { label: "Camera", value: "Nikon Z9 / D850 / D7500" },
                 ].map((item) => (
@@ -132,9 +132,9 @@ export default function About() {
 
       {/* Image Row — full bleed */}
       <div className="grid grid-cols-3 h-64 lg:h-80">
-        <img src="https://images.pexels.com/photos/19281386/pexels-photo-19281386.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=600" alt="Wildlife portrait" className="w-full h-full object-cover" />
-        <img src="https://images.pexels.com/photos/37202118/pexels-photo-37202118.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=600" alt="Forest landscape" className="w-full h-full object-cover" />
-        <img src="https://images.pexels.com/photos/35023115/pexels-photo-35023115.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=600" alt="Nature detail" className="w-full h-full object-cover" />
+        <img src="https://i.postimg.cc/8kx7msdn/IMG-04.png?auto=compress&cs=tinysrgb&fit=crop&h=400&w=600" alt="Wildlife portrait" className="w-full h-full object-cover" />
+        <img src="https://i.postimg.cc/Vs2JW5BY/IMG-06.png?auto=compress&cs=tinysrgb&fit=crop&h=400&w=600" alt="Forest landscape" className="w-full h-full object-cover" />
+        <img src="https://i.postimg.cc/VLMdG1DC/IMG-15.jpg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=600" alt="Nature detail" className="w-full h-full object-cover" />
       </div>
 
       {/* Skills / Gear */}

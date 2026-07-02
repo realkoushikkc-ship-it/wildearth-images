@@ -135,7 +135,7 @@ export default function About() {
         <img src="https://images.pexels.com/photos/19281386/pexels-photo-19281386.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=600" alt="" className="w-full h-full object-cover" />
         <img src="https://images.pexels.com/photos/37202118/pexels-photo-37202118.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=600" alt="" className="w-full h-full object-cover" />
         <img src="https://images.pexels.com/photos/35023115/pexels-photo-35023115.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=400&w=600" alt="" className="w-full h-full object-cover" />
-      </div>
+      </div> 
 
       {/* Skills / Gear */}
       <section className="py-20 px-6 lg:px-20 bg-[#f8f7f4]">

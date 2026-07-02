@@ -308,7 +308,7 @@ export const blogPosts = [
 ];
 
 export const brandCollaborators = [
-  { name: "Canon", logo: "https://i.postimg.cc/Z5x9hdCW/canon.png" },
+  { name: "Formatt Hitech", logo: "https://i.postimg.cc/Mp2Rww50/formatthitech.png" },
   { name: "National Geographic", logo: "🌍" },
   { name: "WWF", logo: "🐼" },
   { name: "Sony", logo: "🎥" },

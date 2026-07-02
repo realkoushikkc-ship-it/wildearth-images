@@ -314,6 +314,6 @@ export const brandCollaborators = [
   { name: "Etihad Airways", logo: "https://i.postimg.cc/9FMVfw8D/etihad.png" },
   { name: "GCF", logo: "https://i.postimg.cc/wTvHBRft/gcf.png" },
   { name: "Outlook India", logo: "https://i.postimg.cc/CL1YKnPz/outlook.png" },
-  { name: "Adobe", logo: "🖥️" },
-  { name: "Lenstag", logo: "🔍" },
+  { name: "Kenya Tourism Board", logo: "https://i.postimg.cc/RZ4Y0kV3/kenya.png" },
+  { name: "Born Free Foundation", logo: "https://i.postimg.cc/L5jy9Tcx/born-free.png" },
 ];

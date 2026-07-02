@@ -309,11 +309,11 @@ export const blogPosts = [
 
 export const brandCollaborators = [
   { name: "Formatt Hitech", logo: "https://i.postimg.cc/Mp2Rww50/formatthitech.png" },
-  { name: "National Geographic", logo: "🌍" },
-  { name: "WWF", logo: "🐼" },
-  { name: "Sony", logo: "🎥" },
-  { name: "Gitzo", logo: "📸" },
-  { name: "Manfrotto", logo: "🎬" },
+  { name: "Tamron", logo: "https://i.postimg.cc/4yGdM4s9/tamron.png" },
+  { name: "Air India", logo: "https://i.postimg.cc/sDXy2G61/air-india.png" },
+  { name: "Etihad Airways", logo: "https://i.postimg.cc/9FMVfw8D/etihad.png" },
+  { name: "GCF", logo: "https://i.postimg.cc/wTvHBRft/gcf.png" },
+  { name: "Outlook India", logo: "https://i.postimg.cc/CL1YKnPz/outlook.png" },
   { name: "Adobe", logo: "🖥️" },
   { name: "Lenstag", logo: "🔍" },
 ];

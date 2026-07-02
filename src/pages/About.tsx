@@ -11,7 +11,7 @@ export default function About() {
       {/* Hero */}
       <div className="relative h-[70vh] overflow-hidden">
         <img
-          src="https://images.pexels.com/photos/37420424/pexels-photo-37420424.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=900&w=1600"
+          src="https://i.postimg.cc/T3ww9C6d/FB-IMG-1782990894550.jpg?auto=compress&cs=tinysrgb&fit=crop&h=900&w=1600"
           alt="Koushik Chatterjee"
           className="w-full h-full object-cover object-top"
         />

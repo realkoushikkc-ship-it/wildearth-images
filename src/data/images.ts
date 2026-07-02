@@ -308,7 +308,7 @@ export const blogPosts = [
 ];
 
 export const brandCollaborators = [
-  { name: "Canon", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Canon_logo.svg/320px-Canon_logo.svg.png" },
+  { name: "Canon", logo: "https://i.postimg.cc/Z5x9hdCW/canon.png" },
   { name: "National Geographic", logo: "🌍" },
   { name: "WWF", logo: "🐼" },
   { name: "Sony", logo: "🎥" },

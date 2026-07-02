@@ -15,7 +15,7 @@ export default function Footer() {
               return (
                 <div key={brand.name} className="flex flex-col items-center gap-2 opacity-70 hover:opacity-100 transition-opacity duration-300 cursor-pointer">
                   {isImage ? (
-                    <img src={brand.logo} alt={brand.name} className="h-6 w-auto object-contain" />
+                    <img src={brand.logo} alt={brand.name} className="h-10 w-auto object-contain" />
                   ) : (
                     <span className="text-3xl">{brand.logo}</span>
                   )}

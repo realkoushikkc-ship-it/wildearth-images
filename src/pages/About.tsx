@@ -26,7 +26,7 @@ export default function About() {
     </h1>
   </div>
 </div>
-
+ 
           {/* Bio Section */}
       <section className="py-20 px-6 lg:px-20">
         <div className="max-w-screen-xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-16">

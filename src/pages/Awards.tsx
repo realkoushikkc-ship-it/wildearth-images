@@ -39,10 +39,10 @@ export default function Awards() {
       <div className="bg-[#0f0f0f] py-12 px-6">
         <div className="max-w-screen-xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
           {[
-            { value: "36", label: "Total Awards" },
-            { value: "12", label: "First Place / Gold" },
+            { value: "13", label: "Total Awards" },
+            { value: "12", label: "Top Category" },
             { value: "8", label: "Major Competitions" },
-            { value: "2021–2024", label: "Award Years" },
+            { value: "2020–2026", label: "Award Years" },
           ].map((stat) => (
             <div key={stat.label}>
               <p className="text-amber-400 text-3xl lg:text-4xl font-bold mb-2" style={{ fontFamily: "Playfair Display, serif" }}>
@@ -118,7 +118,7 @@ export default function Awards() {
       {/* WPotY spotlight */}
       <section className="relative py-24 overflow-hidden">
         <img
-          src="https://images.pexels.com/photos/19281386/pexels-photo-19281386.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=700&w=1920"
+          src="https://i.postimg.cc/gJ4MRkz4/PXL-20250804-055628776-RAW-01-COVER-copy.jpg?auto=compress&cs=tinysrgb&fit=crop&h=700&w=1920"
           alt="Award winning image"
           className="absolute inset-0 w-full h-full object-cover"
         />
@@ -126,10 +126,10 @@ export default function Awards() {
         <div className="relative z-10 max-w-3xl mx-auto text-center px-6">
           <p className="text-amber-400 text-xs tracking-[0.4em] uppercase mb-4 font-light">Spotlight</p>
           <h2 className="text-4xl lg:text-5xl text-white font-light leading-tight mb-6" style={{ fontFamily: "Playfair Display, serif" }}>
-            Wildlife Photographer of the Year
+           35th Wildlife Photographer of the Year
           </h2>
           <p className="text-white/60 text-base leading-relaxed">
-            Recognised four consecutive times by the Natural History Museum's Wildlife Photographer of the Year competition — the world's most prestigious wildlife photography award. From finalist to runner-up, each entry represents months of preparation, travel and fieldwork.
+            Recognised four consecutive times by the 35Awards Photographer of the Year competition — the world's most prestigious photography award. From finalist to runner-up, each entry represents months of preparation, travel and fieldwork.
           </p>
         </div>
       </section>

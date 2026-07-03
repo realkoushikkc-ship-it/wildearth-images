@@ -125,9 +125,9 @@ export default function Awards() {
         <div className="absolute inset-0 bg-black/70" />
         <div className="relative z-10 max-w-3xl mx-auto text-center px-6">
           <p className="text-amber-400 text-xs tracking-[0.4em] uppercase mb-4 font-light">Spotlight</p>
-          <h2 className="text-4xl lg:text-5xl text-white font-light leading-tight mb-6" style={{ fontFamily: "Playfair Display, serif" }}>
-           35th Wildlife Photographer of the Year
-          </h2>
+          <h2 className="text-4xl lg:text-5xl text-white font-light leading-tight mb-6 whitespace-nowrap" style={{ fontFamily: "Playfair Display, serif" }}>
+  35th Wildlife Photographer of the Year
+</h2>
           <p className="text-white/60 text-base leading-relaxed">
             Recognised four consecutive times by the 35Awards Photographer of the Year competition — the world's most prestigious photography award. From finalist to runner-up, each entry represents months of preparation, travel and fieldwork.
           </p>

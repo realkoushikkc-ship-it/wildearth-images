@@ -85,10 +85,10 @@ export default function Footer() {
             <div className="space-y-5">
               {[
                 { value: "15+", label: "Years of Experience" },
-                { value: "850+", label: "Species Photographed" },
-                { value: "47", label: "Countries Visited" },
-                { value: "36", label: "International Awards" },
-                { value: "120+", label: "Exhibitions Worldwide" },
+                { value: "350+", label: "Species Photographed" },
+                { value: "3", label: "Countries Visited" },
+                { value: "13", label: "International Awards" },
+                { value: "11+", label: "Exhibitions Worldwide" },
               ].map((stat) => (
                 <div key={stat.label} className="flex items-center gap-4">
                   <span className="text-amber-400 font-bold text-lg w-16">{stat.value}</span>
@@ -108,7 +108,7 @@ export default function Footer() {
               </div>
               <div className="flex items-center gap-3 text-white/50 text-sm">
                 <MapPin size={14} className="text-amber-400 shrink-0" />
-                <span>Kolkata, India / Global</span>
+                <span>Bengaluru, India / Global</span>
               </div>
               <div className="flex items-center gap-3 text-white/50 text-sm">
                 <Camera size={14} className="text-amber-400 shrink-0" />

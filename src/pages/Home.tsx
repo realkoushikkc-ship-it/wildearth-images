@@ -319,14 +319,14 @@ export default function Home({ onSlideChange }: HomeProps) {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               {
-                image: "https://images.pexels.com/photos/37202118/pexels-photo-37202118.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=500&w=700",
+                image: "https://i.postimg.cc/Vs2JW5BY/IMG-06.png?auto=compress&cs=tinysrgb&fit=crop&h=500&w=700",
                 title: "Fine Art Prints",
                 desc: "Bring the wilderness into your home with limited edition, hand-signed Giclée prints on archival Hahnemühle paper. Each print comes with a certificate of authenticity.",
                 cta: "Shop Prints",
                 link: "/prints",
               },
               {
-                image: "https://images.pexels.com/photos/29345317/pexels-photo-29345317.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=500&w=700",
+                image: "https://i.postimg.cc/fRRwQD4W/02313.png?auto=compress&cs=tinysrgb&fit=crop&h=500&w=700",
                 title: "Image Licensing",
                 desc: "My archive of over 50,000 wildlife images is available for editorial, commercial, advertising and conservation licensing. High-resolution files with full metadata.",
                 cta: "Enquire Now",

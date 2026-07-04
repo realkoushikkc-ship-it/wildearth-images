@@ -13,7 +13,7 @@ const navLinks = [
   { label: "Gallery", path: "/gallery" },
   { label: "Prints", path: "/prints" },
   { label: "Awards", path: "/awards" },
-  { label: "Exhibitions", path: "/exhibitions" },
+  // { label: "Exhibitions", path: "/exhibitions" }, // removed
   { label: "Blog", path: "/blog" },
   { label: "Contact", path: "/contact" },
 ];

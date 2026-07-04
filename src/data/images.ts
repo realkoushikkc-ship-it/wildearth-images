@@ -240,16 +240,16 @@ export const exhibitionsData = [
 
 export const blogPosts = [
   {
-    id: "tracking-leopards-kabini",
-    title: "Tracking Leopards in Kabini: Three Weeks in the Shadows",
-    excerpt: "Dawn after dawn, I waited in the pre-monsoon heat. The forest floor crackled with dried leaves. Then, on the eighteenth morning, a pair of golden eyes met mine through the mist.",
-    date: "January 15, 2025",
-    readTime: "8 min read",
-    category: "Field Notes",
-    image: "https://images.pexels.com/photos/37202118/pexels-photo-37202118.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=600&w=900",
-    tags: ["Leopard", "India", "Big Cats", "Field Notes"],
-    content: "Full article content would go here...",
-  },
+    id: "white-rhino-kenya",
+ title: "Horn First",
+  excerpt: "The wide angle was a gamble. Then he filled it — horn carving the foreground, hide like faulted stone, that impossible sky tearing open behind him. Two tons of animal, eye-level with the dirt, rendered by the lens into something that felt less like wildlife and more like weather. I didn't stalk this frame. I knelt in the dust and the savanna handed it to me: one unrepeatable second where the earth, the sky, and the horn between them briefly aligned.",
+  date: "January 15, 2025",
+  readTime: "8 min read",
+  category: "Field Notes",
+  image: "https://i.postimg.cc/gJ4MRkz4/PXL-20250804-055628776-RAW-01-COVER-copy.jpg?auto=compress&cs=tinysrgb&fit=crop&h=600&w=900",
+  tags: ["White Rhino", "South Africa", "Big Five", "Field Notes", "Conservation"],
+  content: "Full article content would go here...",
+},
   {
     id: "masai-mara-great-migration",
     title: "The Great Migration: Chaos, Beauty and the Circle of Life",

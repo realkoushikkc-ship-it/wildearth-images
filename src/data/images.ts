@@ -287,7 +287,7 @@ export const blogPosts = [
     date: "February 22, 2025",
     readTime: "9 min read",
     category: "Field Notes",
-    image: "https://PLACEHOLDER-ELEPHANT.jpg",
+    image: "https://i.postimg.cc/286TddJt/IMG-4430-copy.jpg?auto=compress&cs=tinysrgb&fit=crop&h=600&w=900",
     tags: ["Elephant", "Kenya", "Big Five", "Tsavo"],
     body: `
       <p>The storm had been building all morning — a bruised sky stacked over the Tsavo scrubland, heavy with electricity and the promise of rain. I was watching the weather when the earth taught me something about scale.</p>

@@ -58,40 +58,21 @@ function BlogPost({ postId }: { postId: string }) {
 
           <div className="w-16 h-px bg-amber-500 mb-8" />
 
-          {/* Simulated article body */}
-          <div className="prose prose-lg max-w-none text-gray-600 space-y-6">
-            <p>
-              The early morning air in the forest carries a stillness that city dwellers rarely experience. It is in this silence that wildlife reveals itself — gradually, on its own terms, to those patient enough to wait. I have spent more hours than I can count in a hide, or flat on the ground, or perched in a tree, waiting for that alignment of subject, light and moment.
-            </p>
-            <p>
-              This particular expedition began with a phone call from a local naturalist contact who had spotted fresh tracks. The signs were unmistakable — the gait, the depth of the impression, the claw marks. A large individual had passed through the night before, moving east towards the water source. We set up at first light, and waited.
-            </p>
-            <blockquote className="border-l-4 border-amber-400 pl-6 py-2 my-8">
-              <p className="text-gray-700 text-xl font-light italic" style={{ fontFamily: "Playfair Display, serif" }}>
-                "The camera is only as powerful as the patience behind it. You cannot rush a wild animal. You can only earn its indifference."
-              </p>
-            </blockquote>
-            <p>
-              Three hours passed. The forest changed around us — birds began their morning chorus, a troop of langurs worked their way through the canopy overhead, and the light shifted from cool blue to warm gold as the sun cleared the treeline. Still we waited.
-            </p>
-            <p>
-              And then, without announcement, it appeared. Moving with the quiet confidence of an animal that knows it has no predator, it paused at the edge of the clearing. I had perhaps thirty seconds. In that time, everything I had learned across fifteen years of fieldwork — patience, stillness, breath control, technical instinct — came together in a handful of frames.
-            </p>
-            <p>
-              This is why wildlife photography matters. Not for the image itself, but for the encounter. The image is simply proof that the encounter happened — and an invitation for others to care about a world they may never see directly.
-            </p>
+                   {/* Dynamic article body */}
+          <div 
+            className="prose prose-lg max-w-none text-gray-600 space-y-6"
+            dangerouslySetInnerHTML={{ __html: post.body }}
+          />
 
-            {/* Tags */}
-            <div className="flex flex-wrap gap-2 pt-6">
-              {post.tags.map((tag) => (
-                <span key={tag} className="flex items-center gap-1 bg-gray-100 text-gray-600 text-xs tracking-wide px-4 py-2">
-                  <Tag size={10} />
-                  {tag}
-                </span>
-              ))}
-            </div>
+          {/* Tags */}
+          <div className="flex flex-wrap gap-2 pt-6">
+            {post.tags.map((tag) => (
+              <span key={tag} className="flex items-center gap-1 bg-gray-100 text-gray-600 text-xs tracking-wide px-4 py-2">
+                <Tag size={10} />
+                {tag}
+              </span>
+            ))}
           </div>
-        </div>
       </article>
 
       {/* Author bio strip */}

@@ -73,6 +73,7 @@ function BlogPost({ postId }: { postId: string }) {
               </span>
             ))}
           </div>
+           </div>
       </article>
 
       {/* Author bio strip */}

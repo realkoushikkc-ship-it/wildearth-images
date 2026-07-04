@@ -266,7 +266,7 @@ export const blogPosts = [
     date: "March 8, 2025",
     readTime: "7 min read",
     category: "Stories",
-    image: "https://i.postimg.cc/yNYNWdWm/IMG-27.jpg"?auto=compress&cs=tinysrgb&fit=crop&h=600&w=900",,
+    image: "https://i.postimg.cc/yNYNWdWm/IMG-27.jpg?auto=compress&cs=tinysrgb&fit=crop&h=600&w=900",
     tags: ["Maasai", "Kenya", "Culture", "Masai Mara"],
     body: `
       <p>The night belonged to the fire. Not the polite, contained fire of city hearths, but a wild, snapping thing that sent sparks spiraling into the African darkness. Around it, the red shukas glowed like embers themselves — crimson against the void, the only color in a world reduced to black and flame.</p>

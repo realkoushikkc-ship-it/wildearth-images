@@ -200,7 +200,7 @@ export default function Home({ onSlideChange }: HomeProps) {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div className="grid grid-cols-2 gap-4">
             <img
-              src="https://i.postimg.cc/nhJtK1Bx/africa-kenya-masai-mara-game-reserve-close-up-image-of-plains-zebra-BXTC9Y-copy-2.jpg?auto=compress&cs=tinysrgb&fit=crop&h=500&w=600"
+              src="https://i.postimg.cc/VLMdG1DC/IMG-15.jpg?auto=compress&cs=tinysrgb&fit=crop&h=500&w=600"
               alt="Lion print"
               className="w-full h-64 object-cover"
             />

@@ -42,7 +42,7 @@ export const galleryCategories = [
     id: "big-cats",
     title: "Big Cats",
     description: "Lions, leopards, cheetahs and tigers captured in their natural habitats across Africa and Asia. From the golden savannahs of the Masai Mara to the dense jungles of Kabini.",
-    coverImage: "https://images.pexels.com/photos/19281386/pexels-photo-19281386.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=800&w=1200",
+    coverImage: "https://i.postimg.cc/fRRwQD4W/02313.png?auto=compress&cs=tinysrgb&fit=crop&h=800&w=1200",
     count: 48,
     images: [
       { url: "https://images.pexels.com/photos/19281386/pexels-photo-19281386.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=800&w=1200", title: "Lions at Dusk", location: "Masai Mara, Kenya" },
@@ -59,7 +59,7 @@ export const galleryCategories = [
     id: "elephants",
     title: "Giants of Africa",
     description: "African and Asian elephants — the gentle giants of the wild. From family herds crossing the Amboseli plains to solitary bulls at watering holes.",
-    coverImage: "https://images.pexels.com/photos/15212404/pexels-photo-15212404.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=800&w=1200",
+    coverImage: "https://i.postimg.cc/286TddJt/IMG-4430-copy.jpg?auto=compress&cs=tinysrgb&fit=crop&h=800&w=1200",
     count: 35,
     images: [
       { url: "https://images.pexels.com/photos/15212404/pexels-photo-15212404.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=800&w=1200", title: "Family at the Tree", location: "Amboseli, Kenya" },
@@ -72,7 +72,7 @@ export const galleryCategories = [
     id: "birds",
     title: "Wings & Feathers",
     description: "A vibrant celebration of avian life from the tropics to the Arctic. Macaws, toucans, raptors and waders — every species a masterpiece of evolution.",
-    coverImage: "https://images.pexels.com/photos/35023115/pexels-photo-35023115.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=800&w=1200",
+    coverImage: "https://i.postimg.cc/gJPMQMcj/DSC-3576-copy.jpg?auto=compress&cs=tinysrgb&fit=crop&h=800&w=1200",
     count: 62,
     images: [
       { url: "https://images.pexels.com/photos/35023115/pexels-photo-35023115.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=800&w=1200", title: "Blue & Gold Macaws", location: "Amazon, Brazil" },
@@ -84,9 +84,9 @@ export const galleryCategories = [
   },
   {
     id: "marine",
-    title: "Beneath the Surface",
+    title: "Cultural",
     description: "The hidden world beneath the waves. From playful dolphins in the Indian Ocean to ancient sea turtles gliding through coral reefs.",
-    coverImage: "https://images.pexels.com/photos/10350645/pexels-photo-10350645.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=800&w=1200",
+    coverImage: "https://i.postimg.cc/vHS0b8Hb/IMG-05.png?auto=compress&cs=tinysrgb&fit=crop&h=800&w=1200",
     count: 29,
     images: [
       { url: "https://images.pexels.com/photos/10350645/pexels-photo-10350645.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=800&w=1200", title: "Ancient Glide", location: "Maldives" },

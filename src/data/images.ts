@@ -59,7 +59,7 @@ export const galleryCategories = [
     id: "elephants",
     title: "Giants of Africa",
     description: "African and Asian elephants — the gentle giants of the wild. From family herds crossing the Amboseli plains to solitary bulls at watering holes.",
-    coverImage: "https://i.postimg.cc/286TddJt/IMG-4430-copy.jpg?auto=compress&cs=tinysrgb&fit=crop&h=800&w=1200",
+    coverImage: "https://i.postimg.cc/Y2PFSvgq/IMG-31.jpg?auto=compress&cs=tinysrgb&fit=crop&h=800&w=1200",
     count: 35,
     images: [
       { url: "https://images.pexels.com/photos/15212404/pexels-photo-15212404.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=800&w=1200", title: "Family at the Tree", location: "Amboseli, Kenya" },

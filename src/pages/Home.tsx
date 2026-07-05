@@ -144,36 +144,36 @@ export default function Home({ onSlideChange }: HomeProps) {
         </div>
       </section>
 
-      {/* SECTION 3: FULL-WIDTH FEATURE IMAGE — Simon Wantling editorial style */}
-      <section className="relative h-[80vh] overflow-hidden">
-        <img
-          src="https://i.postimg.cc/GpmyZf2h/04.jpg?auto=compress&cs=tinysrgb&fit=crop&h=1080&w=1920"
-          alt="African elephant at waterhole"
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/10" />
-        <div className="absolute inset-0 flex items-center px-10 lg:px-20">
-          <div className="max-w-xl">
-            <p className="text-amber-400 text-xs tracking-[0.4em] uppercase mb-4 font-light">Featured Image</p>
-            <h2
-              className="text-4xl lg:text-6xl text-white font-light leading-tight mb-6"
-              style={{ fontFamily: "Playfair Display, serif" }}
-            >
-              The Last Giants
-            </h2>
-            <p className="text-white/70 text-base leading-relaxed mb-8 max-w-sm">
-              African elephants — once numbering in the millions — now number barely 400,000. Every image is a testament to what we still have, and what we stand to lose.
-            </p>
-            <Link
-              to="/gallery/elephants"
-              className="inline-flex items-center gap-3 text-white border border-white/40 px-8 py-3 text-xs tracking-[0.2em] uppercase hover:bg-white hover:text-black transition-all duration-300 group"
-            >
-              View Gallery
-              <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
-            </Link>
-          </div>
-        </div>
-      </section>
+     {/* SECTION 3: FULL-WIDTH FEATURE IMAGE — Simon Wantling editorial style */}
+<section className="relative h-[95vh] overflow-hidden">
+  <img
+    src="https://i.postimg.cc/GpmyZf2h/04.jpg?auto=compress&cs=tinysrgb&fit=crop&h=1080&w=1920"
+    alt="African elephant at waterhole"
+    className="w-full h-full object-cover object-bottom"
+  />
+  <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/10" />
+  <div className="absolute inset-0 flex items-center px-10 lg:px-20">
+    <div className="max-w-xl">
+      <p className="text-amber-400 text-xs tracking-[0.4em] uppercase mb-4 font-light">Featured Image</p>
+      <h2
+        className="text-4xl lg:text-6xl text-white font-light leading-tight mb-6"
+        style={{ fontFamily: "Playfair Display, serif" }}
+      >
+        The Last Giants
+      </h2>
+      <p className="text-white/70 text-base leading-relaxed mb-8 max-w-sm">
+        African elephants — once numbering in the millions — now number barely 400,000. Every image is a testament to what we still have, and what we stand to lose.
+      </p>
+      <Link
+        to="/gallery/elephants"
+        className="inline-flex items-center gap-3 text-white border border-white/40 px-8 py-3 text-xs tracking-[0.2em] uppercase hover:bg-white hover:text-black transition-all duration-300 group"
+      >
+        View Gallery
+        <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
+      </Link>
+    </div>
+  </div>
+</section>
 
       {/* SECTION 4: STATS BAND */}
       <section className="bg-[#0f0f0f] py-16 px-6">

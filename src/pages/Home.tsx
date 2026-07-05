@@ -200,22 +200,22 @@ export default function Home({ onSlideChange }: HomeProps) {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div className="grid grid-cols-2 gap-4">
             <img
-              src="https://images.pexels.com/photos/32420357/pexels-photo-32420357.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=500&w=600"
+              src="https://i.postimg.cc/nhJtK1Bx/africa-kenya-masai-mara-game-reserve-close-up-image-of-plains-zebra-BXTC9Y-copy-2.jpg?auto=compress&cs=tinysrgb&fit=crop&h=500&w=600"
               alt="Lion print"
               className="w-full h-64 object-cover"
             />
             <img
-              src="https://images.pexels.com/photos/10350645/pexels-photo-10350645.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=500&w=600"
+              src="https://i.postimg.cc/52VM5mLj/DSC-4605-Enhanced-NR-copy.jpg?auto=compress&cs=tinysrgb&fit=crop&h=500&w=600"
               alt="Turtle print"
               className="w-full h-64 object-cover mt-8"
             />
             <img
-              src="https://images.pexels.com/photos/37202118/pexels-photo-37202118.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=500&w=600"
+              src="https://i.postimg.cc/rwkLG9xF/IMG-4279-copy-222.jpg?auto=compress&cs=tinysrgb&fit=crop&h=500&w=600"
               alt="Leopard print"
               className="w-full h-64 object-cover -mt-4"
             />
             <img
-              src="https://images.pexels.com/photos/35023115/pexels-photo-35023115.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=500&w=600"
+              src="https://i.postimg.cc/13QZ0Kws/masai-giraffe-giraffa-camelopardalis-tippelskirchi-and-tree-masai-E1NA73-copy-(1).jpg?auto=compress&cs=tinysrgb&fit=crop&h=500&w=600"
               alt="Macaws print"
               className="w-full h-64 object-cover mt-4"
             />

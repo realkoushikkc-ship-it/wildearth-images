@@ -6,8 +6,66 @@ import { ArrowRight, X } from "lucide-react";
 
 const categories = ["All", "Big Cats", "Elephants", "Birds", "Marine"];
 
+// Sample wildlife images for preview (REPLACE THESE WITH YOUR IMAGES)
+const sampleWildlifeImages = {
+  lion: "https://images.unsplash.com/photo-1614027164847-1b28cfe1df60?auto=format&fit=crop&q=80&w=1000",
+  elephant: "https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?auto=format&fit=crop&q=80&w=1000",
+  macaw: "https://images.unsplash.com/photo-1544552866-d3ed42536cfd?auto=format&fit=crop&q=80&w=1000",
+  turtle: "https://images.unsplash.com/photo-1437622368342-7a3d73a34c8f?auto=format&fit=crop&q=80&w=1000",
+  leopard: "https://images.unsplash.com/photo-1516426122078-c669673621cc?auto=format&fit=crop&q=80&w=1000",
+};
+
+// Room mockup backgrounds
+const roomMockups = {
+  living: {
+    image: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&q=80&w=2000",
+    position: { top: "35%", left: "50%", transform: "translate(-50%, -50%)" },
+    wallColor: "bg-stone-100",
+  },
+  office: {
+    image: "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&q=80&w=2000",
+    position: { top: "30%", left: "50%", transform: "translate(-50%, -50%)" },
+    wallColor: "bg-gray-200",
+  },
+  bedroom: {
+    image: "https://images.unsplash.com/photo-1616594039964-40891a909d99?auto=format&fit=crop&q=80&w=2000",
+    position: { top: "40%", left: "50%", transform: "translate(-50%, -50%)" },
+    wallColor: "bg-stone-200",
+  },
+  gallery: {
+    image: "https://images.unsplash.com/photo-1566127444979-b3d2b654e3d7?auto=format&fit=crop&q=80&w=2000",
+    position: { top: "45%", left: "50%", transform: "translate(-50%, -50%)" },
+    wallColor: "bg-white",
+  },
+  modern: {
+    image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&q=80&w=2000",
+    position: { top: "38%", left: "50%", transform: "translate(-50%, -50%)" },
+    wallColor: "bg-stone-50",
+  },
+};
+
+const frameOptions = [
+  { id: "unframed", label: "Fine Art Print (Unframed)", priceAdder: 0, borderClass: "border-4 border-white" },
+  { id: "desk", label: "Small Desk Frame", priceAdder: 45, borderClass: "border-8 border-stone-800" },
+  { id: "medium", label: "Medium Wall Frame", priceAdder: 85, borderClass: "border-12 border-black" },
+  { id: "large", label: "Large Gallery Frame", priceAdder: 150, borderClass: "border-16 border-stone-900" },
+  { id: "oak", label: "Oak Wood Frame", priceAdder: 120, borderClass: "border-12 border-amber-700" },
+  { id: "white", label: "White Modern Frame", priceAdder: 95, borderClass: "border-12 border-stone-100" },
+];
+
+const roomOptions = [
+  { id: "none", label: "Art Only" },
+  { id: "living", label: "Living Room" },
+  { id: "office", label: "Office" },
+  { id: "bedroom", label: "Bedroom" },
+  { id: "gallery", label: "Gallery Wall" },
+  { id: "modern", label: "Modern Interior" },
+];
+
 function PrintModal({ print, onClose }: { print: typeof printsData[0]; onClose: () => void }) {
   const [selectedSize, setSelectedSize] = useState(print.sizes[1] || print.sizes[0]);
+  const [selectedFrame, setSelectedFrame] = useState(frameOptions[1].id);
+  const [selectedRoom, setSelectedRoom] = useState(roomOptions[1].id);
 
   const sizeMultipliers: Record<string, number> = {
     "12×8 inch": 1,
@@ -15,59 +73,174 @@ function PrintModal({ print, onClose }: { print: typeof printsData[0]; onClose: 
     "30×20 inch": 2.8,
     "40×27 inch": 4.2,
   };
-  const price = Math.round(print.basePrice * (sizeMultipliers[selectedSize] || 1));
+  
+  const baseMultiplier = sizeMultipliers[selectedSize] || 1;
+  const frameCost = frameOptions.find(f => f.id === selectedFrame)?.priceAdder || 0;
+  const price = Math.round((print.basePrice * baseMultiplier) + frameCost);
+
+  const selectedFrameData = frameOptions.find(f => f.id === selectedFrame);
+  const selectedRoomData = roomMockups[selectedRoom as keyof typeof roomMockups];
 
   return (
     <div className="fixed inset-0 z-[100] bg-black/80 flex items-center justify-center p-4" onClick={onClose}>
       <div
-        className="bg-white max-w-4xl w-full max-h-[90vh] overflow-y-auto grid grid-cols-1 md:grid-cols-2"
+        className="bg-white max-w-6xl w-full max-h-[90vh] overflow-y-auto grid grid-cols-1 lg:grid-cols-2 shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="relative">
-          <img src={print.image} alt={print.title} className="w-full h-80 md:h-full object-cover" />
-        </div>
-        <div className="p-8 lg:p-10 flex flex-col">
-          <button onClick={onClose} className="self-end text-gray-400 hover:text-gray-900 mb-6">
+        {/* LEFT SIDE: MOCKUP DISPLAY */}
+        <div className="relative bg-gray-100 min-h-[500px] lg:min-h-full flex items-center justify-center overflow-hidden">
+          
+          {/* Room Background */}
+          {selectedRoom !== "none" && selectedRoomData ? (
+            <>
+              <img 
+                src={selectedRoomData.image} 
+                alt={`${selectedRoom} mockup`} 
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-black/20" />
+            </>
+          ) : (
+            <div className="absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200" />
+          )}
+
+          {/* The Framed Print */}
+          <div 
+            className={`relative transition-all duration-500 bg-white ${selectedFrameData?.borderClass || "border-4 border-white"}`}
+            style={{
+              boxShadow: selectedFrame === "unframed" 
+                ? "0 4px 6px -1px rgba(0, 0, 0, 0.1)" 
+                : "0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.1)",
+              ...selectedRoomData?.position,
+              position: selectedRoom !== "none" ? "absolute" : "relative",
+            }}
+          >
+            <img 
+              src={print.image} 
+              alt={print.title} 
+              className="w-full h-auto object-cover block"
+              style={{ 
+                maxWidth: selectedRoom === "none" ? "400px" : "350px",
+                maxHeight: selectedRoom === "none" ? "500px" : "280px"
+              }}
+            />
+            
+            {/* Frame label for unframed */}
+            {selectedFrame === "unframed" && (
+              <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 text-xs text-gray-500 tracking-wider">
+                Giclée Print
+              </div>
+            )}
+          </div>
+
+          {/* Room label */}
+          {selectedRoom !== "none" && (
+            <div className="absolute bottom-4 left-4 bg-black/60 text-white text-xs px-3 py-1.5 rounded backdrop-blur-sm">
+              {roomOptions.find(r => r.id === selectedRoom)?.label} View
+            </div>
+          )}
+
+          {/* Close Button for Mobile */}
+          <button onClick={onClose} className="absolute top-4 right-4 lg:hidden bg-white/90 p-2 rounded-full shadow-lg">
             <X size={20} />
           </button>
+        </div>
+
+        {/* RIGHT SIDE: CONTROLS */}
+        <div className="p-8 lg:p-10 flex flex-col bg-white">
+          <button onClick={onClose} className="self-end text-gray-400 hover:text-gray-900 mb-6 hidden lg:block">
+            <X size={20} />
+          </button>
+          
           <p className="text-amber-500 text-xs tracking-[0.3em] uppercase mb-2">{print.category}</p>
           <h2 className="text-3xl font-light text-gray-900 mb-1" style={{ fontFamily: "Playfair Display, serif" }}>
             {print.title}
           </h2>
           <p className="text-gray-400 text-xs tracking-widest mb-6">{print.location}</p>
-          <p className="text-gray-500 text-xs tracking-[0.2em] uppercase mb-1">{print.edition}</p>
-          <div className="w-12 h-px bg-amber-500 mb-8" />
-
-          <p className="text-xs tracking-[0.2em] uppercase text-gray-400 mb-3">Select Size</p>
-          <div className="grid grid-cols-2 gap-2 mb-8">
-            {print.sizes.map((size) => (
-              <button
-                key={size}
-                onClick={() => setSelectedSize(size)}
-                className={`border py-3 px-4 text-xs tracking-wide transition-all duration-200 ${
-                  selectedSize === size
-                    ? "border-gray-900 bg-gray-900 text-white"
-                    : "border-gray-200 text-gray-600 hover:border-gray-400"
-                }`}
-              >
-                {size}
-              </button>
-            ))}
+          
+          <div className="flex items-center gap-4 mb-8">
+             <p className="text-gray-500 text-xs tracking-[0.2em] uppercase">{print.edition}</p>
+             <div className="h-px w-8 bg-gray-300" />
+             <p className="text-gray-500 text-xs">From £{print.basePrice}</p>
           </div>
 
-          <div className="flex items-center justify-between mb-8">
-            <span className="text-gray-400 text-xs uppercase tracking-widest">Price</span>
-            <span className="text-3xl font-light text-gray-900" style={{ fontFamily: "Playfair Display, serif" }}>
-              £{price}
-            </span>
+          {/* 1. Select Size */}
+          <div className="mb-6">
+            <p className="text-xs tracking-[0.2em] uppercase text-gray-900 font-bold mb-3">1. Select Size</p>
+            <div className="grid grid-cols-2 gap-2">
+              {print.sizes.map((size) => (
+                <button
+                  key={size}
+                  onClick={() => setSelectedSize(size)}
+                  className={`border py-3 px-4 text-xs tracking-wide transition-all duration-200 ${
+                    selectedSize === size
+                      ? "border-gray-900 bg-gray-900 text-white"
+                      : "border-gray-200 text-gray-600 hover:border-gray-400"
+                  }`}
+                >
+                  {size}
+                </button>
+              ))}
+            </div>
           </div>
 
-          <button className="w-full bg-gray-900 text-white py-4 text-xs tracking-[0.3em] uppercase hover:bg-amber-500 transition-all duration-300 mb-4">
-            Enquire About This Print
-          </button>
-          <p className="text-center text-gray-400 text-xs leading-relaxed">
-            All prints include certificate of authenticity · Worldwide shipping · 14-day returns
-          </p>
+          {/* 2. Select Frame Format */}
+          <div className="mb-6">
+            <p className="text-xs tracking-[0.2em] uppercase text-gray-900 font-bold mb-3">2. Select Frame</p>
+            <div className="grid grid-cols-1 gap-2 max-h-48 overflow-y-auto">
+              {frameOptions.map((frame) => (
+                <button
+                  key={frame.id}
+                  onClick={() => setSelectedFrame(frame.id)}
+                  className={`border py-3 px-4 text-xs tracking-wide transition-all duration-200 flex justify-between items-center ${
+                    selectedFrame === frame.id
+                      ? "border-amber-500 bg-amber-50 text-gray-900"
+                      : "border-gray-200 text-gray-600 hover:border-gray-400"
+                  }`}
+                >
+                  <span>{frame.label}</span>
+                  {frame.priceAdder > 0 && <span className="text-gray-400">+£{frame.priceAdder}</span>}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* 3. View in Room */}
+          <div className="mb-8">
+            <p className="text-xs tracking-[0.2em] uppercase text-gray-900 font-bold mb-3">3. Preview in Room</p>
+            <div className="grid grid-cols-3 gap-2">
+              {roomOptions.map((room) => (
+                <button
+                  key={room.id}
+                  onClick={() => setSelectedRoom(room.id)}
+                  className={`py-2.5 px-2 text-[10px] tracking-wide border transition-all ${
+                    selectedRoom === room.id
+                      ? "bg-gray-900 text-white border-gray-900"
+                      : "bg-white text-gray-500 border-gray-200 hover:border-gray-400"
+                  }`}
+                >
+                  {room.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Price & Action */}
+          <div className="mt-auto pt-6 border-t border-gray-100">
+            <div className="flex items-center justify-between mb-6">
+              <span className="text-gray-500 text-xs uppercase tracking-widest">Total Price</span>
+              <span className="text-3xl font-light text-gray-900" style={{ fontFamily: "Playfair Display, serif" }}>
+                £{price}
+              </span>
+            </div>
+
+            <button className="w-full bg-gray-900 text-white py-4 text-xs tracking-[0.3em] uppercase hover:bg-amber-500 transition-all duration-300 mb-4">
+              Enquire About This Print
+            </button>
+            <p className="text-center text-gray-400 text-[10px] leading-relaxed">
+              All prints include certificate of authenticity · Worldwide shipping · 14-day returns
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -110,7 +283,7 @@ export default function Prints() {
       <div className="bg-[#0f0f0f] py-10 px-6">
         <div className="max-w-screen-xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
           {[
-            { icon: "🖨️", title: "Giclée Printing", desc: "Fine art pigment inks on museum-grade paper" },
+            { icon: "️", title: "Giclée Printing", desc: "Fine art pigment inks on museum-grade paper" },
             { icon: "✍️", title: "Hand Signed", desc: "Every print signed and numbered by the photographer" },
             { icon: "📜", title: "Certificate", desc: "Certificate of authenticity included with every print" },
             { icon: "🌍", title: "Worldwide Shipping", desc: "Fully insured delivery to any country" },

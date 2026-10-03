@@ -1,400 +1,241 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { printsData } from "../data/images";
-import { ArrowRight, X } from "lucide-react";
+import { X, Check, Mail, ArrowRight, Shield } from "lucide-react";
 
 const categories = ["All", "Big Cats", "Elephants", "Birds", "Marine"];
 
-// Room mockup backgrounds - Professional interior photography
-const roomMockups = {
-  none: {
-    image: null,
-    wallPosition: { top: "50%", left: "50%" },
-  },
-  living: {
-    image: "https://images.unsplash.com/photo-1600210491892-03d54c0fba8b?auto=format&fit=crop&q=80&w=2000",
-    wallPosition: { top: "42%", left: "55%" },
-  },
-  office: {
-    image: "https://images.unsplash.com/photo-1497366754035-f200968a6e7c?auto=format&fit=crop&q=80&w=2000",
-    wallPosition: { top: "38%", left: "52%" },
-  },
-  bedroom: {
-    image: "https://images.unsplash.com/photo-1616594039964-40891a909d99?auto=format&fit=crop&q=80&w=2000",
-    wallPosition: { top: "40%", left: "50%" },
-  },
-  gallery: {
-    image: "https://images.unsplash.com/photo-1566127444979-b3d2b654e3d7?auto=format&fit=crop&q=80&w=2000",
-    wallPosition: { top: "45%", left: "50%" },
-  },
-  modern: {
-    image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&q=80&w=2000",
-    wallPosition: { top: "43%", left: "48%" },
-  },
-};
+interface SelectedSize {
+  size: string;
+  price: number;
+}
 
-const frameOptions = [
-  { 
-    id: "unframed", 
-    label: "Fine Art Print (Unframed)", 
-    priceAdder: 0, 
-    matWidth: 40,
-    frameWidth: 0,
-    shadow: "0 20px 40px rgba(0,0,0,0.15)",
-    bgColor: "white"
-  },
-  { 
-    id: "desk", 
-    label: "Small Desk Frame", 
-    priceAdder: 45, 
-    matWidth: 30,
-    frameWidth: 12,
-    shadow: "0 25px 50px rgba(0,0,0,0.25)",
-    frameColor: "#1a1a1a",
-    bgColor: "white"
-  },
-  { 
-    id: "medium", 
-    label: "Medium Wall Frame", 
-    priceAdder: 85, 
-    matWidth: 50,
-    frameWidth: 16,
-    shadow: "0 30px 60px rgba(0,0,0,0.3)",
-    frameColor: "#0a0a0a",
-    bgColor: "white"
-  },
-  { 
-    id: "large", 
-    label: "Large Gallery Frame", 
-    priceAdder: 150, 
-    matWidth: 60,
-    frameWidth: 20,
-    shadow: "0 35px 70px rgba(0,0,0,0.35)",
-    frameColor: "#1a1a1a",
-    bgColor: "white"
-  },
-  { 
-    id: "oak", 
-    label: "Oak Wood Frame", 
-    priceAdder: 120, 
-    matWidth: 50,
-    frameWidth: 18,
-    shadow: "0 30px 60px rgba(0,0,0,0.25)",
-    frameColor: "#8B6F47",
-    bgColor: "white"
-  },
-  { 
-    id: "white", 
-    label: "White Modern Frame", 
-    priceAdder: 95, 
-    matWidth: 50,
-    frameWidth: 16,
-    shadow: "0 30px 60px rgba(0,0,0,0.2)",
-    frameColor: "#f5f5f5",
-    bgColor: "white"
-  },
-];
+function ArtworkModal({ print, onClose }: { print: typeof printsData[0]; onClose: () => void }) {
+  const [selectedSizes, setSelectedSizes] = useState<SelectedSize[]>([]);
+  const [email, setEmail] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-const roomOptions = [
-  { id: "none", label: "Art Only" },
-  { id: "living", label: "Living Room" },
-  { id: "office", label: "Office" },
-  { id: "bedroom", label: "Bedroom" },
-  { id: "gallery", label: "Gallery Wall" },
-  { id: "modern", label: "Modern Interior" },
-];
-
-function PrintModal({ print, onClose }: { print: typeof printsData[0]; onClose: () => void }) {
-  const [selectedSize, setSelectedSize] = useState(print.sizes[1] || print.sizes[0]);
-  const [selectedFrame, setSelectedFrame] = useState(frameOptions[2].id);
-  const [selectedRoom, setSelectedRoom] = useState(roomOptions[1].id);
-
-  const sizeMultipliers: Record<string, number> = {
-    "12×8 inch": 1,
-    "20×13 inch": 1.8,
-    "30×20 inch": 2.8,
-    "40×27 inch": 4.2,
-  };
-  
-  const baseMultiplier = sizeMultipliers[selectedSize] || 1;
-  const frameCost = frameOptions.find(f => f.id === selectedFrame)?.priceAdder || 0;
-  const price = Math.round((print.basePrice * baseMultiplier) + frameCost);
-
-  const selectedFrameData = frameOptions.find(f => f.id === selectedFrame);
-  const selectedRoomData = roomMockups[selectedRoom as keyof typeof roomMockups];
-
-  // Calculate dimensions based on size
-  const getSizeDimensions = () => {
-    const ratios: Record<string, { width: number; height: number }> = {
-      "12×8 inch": { width: 300, height: 200 },
-      "20×13 inch": { width: 400, height: 260 },
-      "30×20 inch": { width: 500, height: 333 },
-      "40×27 inch": { width: 600, height: 405 },
-    };
-    return ratios[selectedSize] || ratios["20×13 inch"];
+  // Calculate prices based on size
+  const sizePricing: Record<string, number> = {
+    "12×8 inch": print.basePrice,
+    "20×13 inch": Math.round(print.basePrice * 1.8),
+    "30×20 inch": Math.round(print.basePrice * 2.8),
+    "40×27 inch": Math.round(print.basePrice * 4.2),
   };
 
-  const dimensions = getSizeDimensions();
-  const matWidth = selectedFrameData?.matWidth || 0;
-  const frameWidth = selectedFrameData?.frameWidth || 0;
-  const totalWidth = dimensions.width + (matWidth * 2) + (frameWidth * 2);
-  const totalHeight = dimensions.height + (matWidth * 2) + (frameWidth * 2);
+  const toggleSize = (size: string) => {
+    const price = sizePricing[size];
+    setSelectedSizes(prev => {
+      const exists = prev.find(s => s.size === size);
+      if (exists) {
+        return prev.filter(s => s.size !== size);
+      }
+      return [...prev, { size, price }];
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    
+    // In real implementation, you would send to your backend
+    // fetch('/api/enquiry', { method: 'POST', body: JSON.stringify({ email, print, selectedSizes }) })
+    
+    setSubmitted(true);
+    setIsLoading(false);
+  };
+
+  const totalPrice = selectedSizes.reduce((sum, s) => sum + s.price, 0);
 
   return (
-    <div className="fixed inset-0 z-[100] bg-black/80 flex items-center justify-center p-4" onClick={onClose}>
-      <div
-        className="bg-white max-w-7xl w-full max-h-[95vh] overflow-hidden grid grid-cols-1 lg:grid-cols-2 shadow-2xl"
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* LEFT SIDE: MOCKUP DISPLAY */}
-        <div className="relative bg-gray-100 h-[60vh] lg:h-full overflow-hidden">
-          
-          {/* Room Background Layer */}
-          {selectedRoom !== "none" && selectedRoomData?.image ? (
-            <div className="absolute inset-0">
-              <img 
-                src={selectedRoomData.image} 
-                alt={`${selectedRoom} mockup`} 
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-black/10" />
-            </div>
-          ) : (
-            <div className="absolute inset-0 bg-gradient-to-br from-stone-200 to-stone-300" />
-          )}
+    <div className="fixed inset-0 z-[100] bg-black flex items-center justify-center overflow-hidden">
+      {/* Background Image with Blur */}
+      <div className="absolute inset-0 overflow-hidden">
+        <img 
+          src={print.image} 
+          alt="" 
+          className="w-full h-full object-cover opacity-30 blur-xl scale-110"
+        />
+        <div className="absolute inset-0 bg-black/60" />
+      </div>
 
-          {/* Fixed Artwork Container - Centered and Static */}
-          <div 
-            className="absolute transition-all duration-500 ease-out"
-            style={{
-              top: selectedRoomData?.wallPosition.top || "50%",
-              left: selectedRoomData?.wallPosition.left || "50%",
-              transform: "translate(-50%, -50%)",
-            }}
-          >
+      <div className="relative z-10 w-full max-w-7xl mx-4 lg:mx-8 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 max-h-[90vh] overflow-y-auto py-8">
+        
+        {/* Left: Framed Artwork Preview */}
+        <div className="flex items-center justify-center">
+          <div className="relative">
             {/* Frame Container */}
-            <div
+            <div 
+              className="relative bg-white p-6 lg:p-10 shadow-2xl"
               style={{
-                width: totalWidth,
-                height: totalHeight,
-                backgroundColor: selectedFrameData?.frameColor || "white",
-                boxShadow: selectedFrameData?.shadow || "0 20px 40px rgba(0,0,0,0.15)",
-                position: "relative",
+                boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255,255,255,0.1) inset"
               }}
             >
               {/* Mat Board */}
-              {matWidth > 0 && (
-                <div
-                  style={{
-                    position: "absolute",
-                    top: frameWidth,
-                    left: frameWidth,
-                    right: frameWidth,
-                    bottom: frameWidth,
-                    backgroundColor: selectedFrameData?.bgColor || "white",
-                    boxShadow: "inset 0 0 0 1px rgba(0,0,0,0.05)",
-                  }}
-                >
-                  {/* Artwork Image */}
-                  <div
-                    style={{
-                      position: "absolute",
-                      top: matWidth,
-                      left: matWidth,
-                      right: matWidth,
-                      bottom: matWidth,
-                      overflow: "hidden",
-                    }}
-                  >
-                    <img 
-                      src={print.image} 
-                      alt={print.title} 
-                      className="w-full h-full object-cover"
-                      style={{
-                        width: dimensions.width,
-                        height: dimensions.height,
-                      }}
+              <div className="bg-white p-4 lg:p-6">
+                <img 
+                  src={print.image} 
+                  alt={print.title}
+                  className="w-full h-auto max-w-md lg:max-w-lg object-contain"
+                  style={{ maxHeight: "60vh" }}
+                />
+              </div>
+              
+              {/* Frame Label */}
+              <div className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 bg-white px-4 py-1 text-xs tracking-[0.3em] uppercase text-gray-900 font-medium shadow-lg">
+                {print.edition}
+              </div>
+            </div>
+            
+            {/* Hanging Wire Effect */}
+            <div className="absolute -top-16 left-1/2 transform -translate-x-1/2 w-32 h-16 overflow-hidden opacity-30">
+              <svg viewBox="0 0 100 60" className="w-full h-full">
+                <path d="M 10 50 Q 50 10 90 50" stroke="white" strokeWidth="1" fill="none" />
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        {/* Right: Selection Panel */}
+        <div className="bg-white/95 backdrop-blur-xl rounded-sm p-8 lg:p-12 flex flex-col">
+          <button 
+            onClick={onClose}
+            className="absolute top-6 right-6 text-white/60 hover:text-white transition-colors"
+          >
+            <X size={24} />
+          </button>
+
+          {!submitted ? (
+            <>
+              {/* Header */}
+              <div className="mb-10">
+                <p className="text-amber-500 text-xs tracking-[0.4em] uppercase mb-3 font-semibold">
+                  {print.category}
+                </p>
+                <h2 className="text-4xl lg:text-5xl font-light text-gray-900 mb-4" style={{ fontFamily: "Playfair Display, serif" }}>
+                  {print.title}
+                </h2>
+                <p className="text-gray-500 text-sm tracking-wide mb-2">{print.location}</p>
+                <div className="w-16 h-px bg-amber-500 mt-6" />
+              </div>
+
+              {/* Size Selection */}
+              <div className="mb-10">
+                <h3 className="text-xs tracking-[0.3em] uppercase text-gray-900 font-bold mb-6">
+                  Select Sizes
+                </h3>
+                <div className="space-y-3">
+                  {print.sizes.map((size) => {
+                    const price = sizePricing[size];
+                    const isSelected = selectedSizes.find(s => s.size === size);
+                    
+                    return (
+                      <button
+                        key={size}
+                        onClick={() => toggleSize(size)}
+                        className={`w-full flex items-center justify-between p-5 border-2 transition-all duration-300 group ${
+                          isSelected 
+                            ? "border-gray-900 bg-gray-900 text-white" 
+                            : "border-gray-200 hover:border-gray-400 text-gray-700"
+                        }`}
+                      >
+                        <div className="flex items-center gap-4">
+                          <div className={`w-6 h-6 border-2 flex items-center justify-center transition-all ${
+                            isSelected ? "border-white bg-white" : "border-gray-300 group-hover:border-gray-500"
+                          }`}>
+                            {isSelected && <Check size={14} className="text-gray-900" />}
+                          </div>
+                          <span className="text-sm tracking-wide font-medium">{size}</span>
+                        </div>
+                        <span className="text-lg font-light">£{price}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Total */}
+              {selectedSizes.length > 0 && (
+                <div className="mb-8 p-6 bg-gray-50 border border-gray-200">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-sm text-gray-600">Selected ({selectedSizes.length})</span>
+                    <span className="text-2xl font-light text-gray-900" style={{ fontFamily: "Playfair Display, serif" }}>
+                      £{totalPrice}
+                    </span>
+                  </div>
+                  <p className="text-xs text-gray-400">Including VAT & Certificate of Authenticity</p>
+                </div>
+              )}
+
+              {/* Email Form */}
+              <form onSubmit={handleSubmit} className="mt-auto">
+                <div className="mb-6">
+                  <label className="block text-xs tracking-[0.2em] uppercase text-gray-900 font-bold mb-3">
+                    Your Email Address
+                  </label>
+                  <div className="relative">
+                    <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+                    <input
+                      type="email"
+                      required
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="your@email.com"
+                      className="w-full pl-12 pr-4 py-4 border border-gray-300 focus:border-gray-900 focus:outline-none transition-colors text-sm"
                     />
                   </div>
                 </div>
-              )}
-              
-              {/* Unframed print */}
-              {matWidth === 0 && (
-                <div className="absolute inset-0 p-2 bg-white">
-                  <img 
-                    src={print.image} 
-                    alt={print.title} 
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              )}
-            </div>
 
-            {/* Hanging Shadow Effect */}
-            <div 
-              className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1"
-              style={{
-                width: totalWidth * 0.6,
-                height: "20px",
-                background: "radial-gradient(ellipse at center, rgba(0,0,0,0.2) 0%, transparent 70%)",
-                filter: "blur(4px)",
-              }}
-            />
-          </div>
-
-          {/* Room Label */}
-          {selectedRoom !== "none" && (
-            <div className="absolute bottom-6 left-6 bg-black/70 backdrop-blur-md text-white text-xs px-4 py-2 rounded-sm tracking-wider uppercase">
-              {roomOptions.find(r => r.id === selectedRoom)?.label}
-            </div>
-          )}
-
-          {/* Size Label */}
-          <div className="absolute top-6 left-6 bg-white/90 backdrop-blur-md text-gray-900 text-xs px-4 py-2 rounded-sm tracking-wider">
-            {selectedSize}
-          </div>
-
-          {/* Close Button */}
-          <button 
-            onClick={onClose} 
-            className="absolute top-6 right-6 bg-white/90 backdrop-blur-md p-2 rounded-sm hover:bg-white transition-colors lg:block hidden"
-          >
-            <X size={20} />
-          </button>
-        </div>
-
-        {/* RIGHT SIDE: CONTROLS */}
-        <div className="p-8 lg:p-12 flex flex-col bg-white overflow-y-auto max-h-[95vh] lg:max-h-full">
-          <button 
-            onClick={onClose} 
-            className="self-end text-gray-400 hover:text-gray-900 mb-4 lg:hidden"
-          >
-            <X size={20} />
-          </button>
-          
-          {/* Header */}
-          <div className="mb-8">
-            <p className="text-amber-600 text-xs tracking-[0.3em] uppercase mb-2 font-semibold">
-              {print.category}
-            </p>
-            <h2 className="text-4xl font-light text-gray-900 mb-2" style={{ fontFamily: "Playfair Display, serif" }}>
-              {print.title}
-            </h2>
-            <p className="text-gray-400 text-xs tracking-widest mb-4">{print.location}</p>
-            <div className="flex items-center gap-4">
-              <p className="text-gray-500 text-xs tracking-[0.2em] uppercase">{print.edition}</p>
-              <div className="h-px w-8 bg-amber-500" />
-            </div>
-          </div>
-
-          {/* 1. Select Size */}
-          <div className="mb-8">
-            <p className="text-xs tracking-[0.25em] uppercase text-gray-900 font-bold mb-4">
-              1. Select Size
-            </p>
-            <div className="grid grid-cols-2 gap-3">
-              {print.sizes.map((size) => (
                 <button
-                  key={size}
-                  onClick={() => setSelectedSize(size)}
-                  className={`border py-4 px-4 text-sm tracking-wide transition-all duration-200 ${
-                    selectedSize === size
-                      ? "border-gray-900 bg-gray-900 text-white"
-                      : "border-gray-200 text-gray-600 hover:border-gray-400"
-                  }`}
+                  type="submit"
+                  disabled={selectedSizes.length === 0 || isLoading}
+                  className="w-full bg-gray-900 text-white py-5 text-xs tracking-[0.3em] uppercase hover:bg-amber-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center justify-center gap-3 font-medium"
                 >
-                  {size}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* 2. Select Frame */}
-          <div className="mb-8">
-            <p className="text-xs tracking-[0.25em] uppercase text-gray-900 font-bold mb-4">
-              2. Select Frame
-            </p>
-            <div className="space-y-2 max-h-56 overflow-y-auto pr-2">
-              {frameOptions.map((frame) => (
-                <button
-                  key={frame.id}
-                  onClick={() => setSelectedFrame(frame.id)}
-                  className={`w-full border py-4 px-5 text-sm tracking-wide transition-all duration-200 flex justify-between items-center ${
-                    selectedFrame === frame.id
-                      ? "border-gray-900 bg-gray-50"
-                      : "border-gray-200 text-gray-600 hover:border-gray-400"
-                  }`}
-                >
-                  <span className="font-medium">{frame.label}</span>
-                  {frame.priceAdder > 0 && (
-                    <span className="text-gray-400 text-sm">+£{frame.priceAdder}</span>
+                  {isLoading ? (
+                    <span className="animate-pulse">Processing...</span>
+                  ) : (
+                    <>
+                      Submit Enquiry <ArrowRight size={16} />
+                    </>
                   )}
                 </button>
-              ))}
-            </div>
-          </div>
 
-          {/* 3. Preview in Room */}
-          <div className="mb-10">
-            <p className="text-xs tracking-[0.25em] uppercase text-gray-900 font-bold mb-4">
-              3. Preview in Room
-            </p>
-            <div className="grid grid-cols-3 gap-2">
-              {roomOptions.map((room) => (
-                <button
-                  key={room.id}
-                  onClick={() => setSelectedRoom(room.id)}
-                  className={`py-3 px-3 text-xs tracking-wide border transition-all duration-200 ${
-                    selectedRoom === room.id
-                      ? "bg-gray-900 text-white border-gray-900"
-                      : "bg-white text-gray-600 border-gray-200 hover:border-gray-400"
-                  }`}
-                >
-                  {room.label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Price & Action */}
-          <div className="mt-auto pt-8 border-t border-gray-200">
-            <div className="flex items-end justify-between mb-8">
-              <div>
-                <p className="text-gray-400 text-xs uppercase tracking-widest mb-1">Total Price</p>
-                <p className="text-gray-500 text-sm">Including VAT</p>
+                <div className="mt-6 flex items-center justify-center gap-2 text-gray-400 text-xs">
+                  <Shield size={14} />
+                  <span>Secure & Confidential</span>
+                </div>
+              </form>
+            </>
+          ) : (
+            /* Success Message */
+            <div className="flex-1 flex flex-col items-center justify-center text-center py-12">
+              <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mb-8">
+                <Check size={40} className="text-green-600" />
               </div>
-              <span className="text-5xl font-light text-gray-900" style={{ fontFamily: "Playfair Display, serif" }}>
-                £{price}
-              </span>
+              <h3 className="text-3xl font-light text-gray-900 mb-6" style={{ fontFamily: "Playfair Display, serif" }}>
+                Thank You
+              </h3>
+              <p className="text-gray-600 text-lg leading-relaxed mb-8 max-w-md">
+                Thank you so much for purchasing. Mr. Koushik will soon personally be in touch with you.
+              </p>
+              <div className="w-16 h-px bg-amber-500 mb-8" />
+              <p className="text-sm text-gray-400">
+                A confirmation has been sent to<br />
+                <span className="text-gray-900 font-medium">{email}</span>
+              </p>
+              <button
+                onClick={onClose}
+                className="mt-10 text-xs tracking-[0.2em] uppercase text-gray-500 hover:text-gray-900 transition-colors"
+              >
+                Continue Browsing
+              </button>
             </div>
-
-            <button className="w-full bg-gray-900 text-white py-5 text-xs tracking-[0.3em] uppercase hover:bg-amber-500 transition-all duration-300 mb-4 font-medium">
-              Enquire About This Print
-            </button>
-            
-            <div className="flex items-center justify-center gap-6 text-gray-400 text-xs">
-              <span className="flex items-center gap-2">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                </svg>
-                Certificate
-              </span>
-              <span className="flex items-center gap-2">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                Worldwide
-              </span>
-              <span className="flex items-center gap-2">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
-                14-day Returns
-              </span>
-            </div>
-          </div>
+          )}
         </div>
       </div>
     </div>
@@ -404,65 +245,65 @@ function PrintModal({ print, onClose }: { print: typeof printsData[0]; onClose: 
 export default function Prints() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [selectedPrint, setSelectedPrint] = useState<typeof printsData[0] | null>(null);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const filtered = activeCategory === "All"
     ? printsData
     : printsData.filter((p) => p.category === activeCategory);
 
   return (
-    <div className="bg-white">
-      <Navbar isLight={false} forceTransparent={false} />
+    <div className="bg-white min-h-screen">
+      <Navbar isLight={true} forceTransparent={true} />
 
-      {/* Hero */}
-      <div className="relative h-[55vh] overflow-hidden">
+      {/* Hero Section */}
+      <div className="relative h-screen overflow-hidden">
         <img
-          src="https://images.pexels.com/photos/32420357/pexels-photo-32420357.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=900&w=1600"
-          alt="Fine Art Prints"
+          src="https://images.pexels.com/photos/32420357/pexels-photo-32420357.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=1200&w=1920"
+          alt="Fine Art Gallery"
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-black/70" />
-        <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-          <p className="text-amber-400 text-xs tracking-[0.5em] uppercase mb-4 font-light">Limited Edition</p>
-          <h1 className="text-5xl lg:text-7xl text-white font-light" style={{ fontFamily: "Playfair Display, serif" }}>
-            Fine Art Prints
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/60" />
+        
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
+          <p className="text-amber-400 text-xs tracking-[0.6em] uppercase mb-6 font-light animate-fade-in">
+            Limited Edition Wildlife Photography
+          </p>
+          <h1 className="text-6xl lg:text-8xl text-white font-light mb-8 tracking-tight" style={{ fontFamily: "Playfair Display, serif" }}>
+            The Collection
           </h1>
-          <div className="w-16 h-px bg-amber-400 mt-8" />
-          <p className="text-white/50 text-sm mt-6 max-w-md">
-            Hahnemühle archival prints. Signed & numbered. Delivered worldwide.
+          <div className="w-24 h-px bg-amber-400/60 mb-8" />
+          <p className="text-white/70 text-sm lg:text-base max-w-lg leading-relaxed font-light">
+            Museum-quality fine art prints. Hand-signed and numbered.<br />
+            Each piece tells a story of the wild.
           </p>
         </div>
-      </div>
 
-      {/* Print process / quality info band */}
-      <div className="bg-[#0f0f0f] py-10 px-6">
-        <div className="max-w-screen-xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-          {[
-            { icon: "🖨️", title: "Giclée Printing", desc: "Fine art pigment inks on museum-grade paper" },
-            { icon: "✍️", title: "Hand Signed", desc: "Every print signed and numbered by the photographer" },
-            { icon: "📜", title: "Certificate", desc: "Certificate of authenticity included with every print" },
-            { icon: "🌍", title: "Worldwide Shipping", desc: "Fully insured delivery to any country" },
-          ].map((item) => (
-            <div key={item.title}>
-              <div className="text-3xl mb-3">{item.icon}</div>
-              <p className="text-white text-xs tracking-[0.2em] uppercase mb-2 font-medium">{item.title}</p>
-              <p className="text-white/40 text-xs leading-relaxed">{item.desc}</p>
-            </div>
-          ))}
+        {/* Scroll Indicator */}
+        <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+          <div className="w-6 h-10 border-2 border-white/40 rounded-full flex justify-center pt-2">
+            <div className="w-1 h-2 bg-white/60 rounded-full" />
+          </div>
         </div>
       </div>
 
-      {/* Filter */}
-      <div className="py-10 px-6 bg-[#f8f7f4]">
-        <div className="max-w-screen-xl mx-auto">
-          <div className="flex flex-wrap items-center gap-3">
+      {/* Category Filter - Sticky */}
+      <div className={`sticky top-0 z-50 transition-all duration-500 ${scrolled ? "bg-white/95 backdrop-blur-md shadow-sm py-4" : "bg-white py-8"}`}>
+        <div className="max-w-screen-xl mx-auto px-6 lg:px-10">
+          <div className="flex flex-wrap items-center justify-center gap-4">
             {categories.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
-                className={`px-6 py-2.5 text-xs tracking-[0.2em] uppercase border transition-all duration-300 ${
+                className={`px-8 py-3 text-xs tracking-[0.25em] uppercase transition-all duration-300 border ${
                   activeCategory === cat
                     ? "bg-gray-900 border-gray-900 text-white"
-                    : "border-gray-300 text-gray-500 hover:border-gray-900 hover:text-gray-900"
+                    : "bg-transparent border-gray-200 text-gray-500 hover:border-gray-900 hover:text-gray-900"
                 }`}
               >
                 {cat}
@@ -472,74 +313,117 @@ export default function Prints() {
         </div>
       </div>
 
-      {/* Prints Grid */}
-      <div className="py-12 px-6 lg:px-10 bg-[#f8f7f4]">
-        <div className="max-w-screen-xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filtered.map((print) => (
-            <div
-              key={print.id}
-              className="group cursor-pointer"
-              onClick={() => setSelectedPrint(print)}
-            >
-              {/* Image */}
-              <div className="relative overflow-hidden aspect-[4/3] mb-5">
-                <img
-                  src={print.image}
-                  alt={print.title}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-                {/* Hover overlay */}
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-500 flex items-center justify-center">
-                  <div className="opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0">
-                    <span className="border border-white text-white text-xs tracking-[0.3em] uppercase px-8 py-3 flex items-center gap-2">
-                      View Print <ArrowRight size={12} />
-                    </span>
+      {/* Gallery Grid - Masonry Style */}
+      <div className="py-16 px-6 lg:px-10 bg-white">
+        <div className="max-w-screen-2xl mx-auto">
+          <div className="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
+            {filtered.map((print, index) => (
+              <div
+                key={print.id}
+                className="break-inside-avoid group cursor-pointer relative"
+                onClick={() => setSelectedPrint(print)}
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                {/* Image Container */}
+                <div className="relative overflow-hidden bg-gray-100">
+                  <img
+                    src={print.image}
+                    alt={print.title}
+                    className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                  
+                  {/* Overlay */}
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-500 flex items-center justify-center opacity-0 group-hover:opacity-100">
+                    <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                      <span className="inline-flex items-center gap-3 border-2 border-white text-white px-8 py-4 text-xs tracking-[0.3em] uppercase hover:bg-white hover:text-gray-900 transition-all duration-300">
+                        View Details <ArrowRight size={14} />
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Edition Badge */}
+                  <div className="absolute top-4 right-4 bg-white/90 backdrop-blur text-gray-900 text-[10px] tracking-[0.2em] uppercase px-3 py-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    {print.edition}
                   </div>
                 </div>
-                {/* Edition badge */}
-                <div className="absolute top-4 right-4 bg-black/70 text-white text-[10px] tracking-[0.2em] uppercase px-3 py-1.5">
-                  {print.edition}
-                </div>
-              </div>
 
-              {/* Info */}
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="text-amber-500 text-[10px] tracking-[0.3em] uppercase mb-1">{print.category}</p>
-                  <h3 className="text-gray-900 text-xl font-medium" style={{ fontFamily: "Playfair Display, serif" }}>
+                {/* Info */}
+                <div className="mt-5 text-center">
+                  <p className="text-amber-600 text-[10px] tracking-[0.3em] uppercase mb-2">{print.category}</p>
+                  <h3 className="text-gray-900 text-xl font-medium mb-1" style={{ fontFamily: "Playfair Display, serif" }}>
                     {print.title}
                   </h3>
-                  <p className="text-gray-400 text-xs tracking-wide mt-1">{print.location}</p>
-                </div>
-                <div className="text-right">
-                  <p className="text-gray-400 text-xs mb-1">From</p>
-                  <p className="text-gray-900 text-lg font-medium">£{print.basePrice}</p>
+                  <p className="text-gray-400 text-xs tracking-wide">{print.location}</p>
+                  <p className="text-gray-900 text-sm mt-3 font-medium">From £{print.basePrice}</p>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* Custom print enquiry */}
-      <section className="py-20 px-6 bg-gray-900 text-white text-center">
-        <p className="text-amber-400 text-xs tracking-[0.4em] uppercase mb-4 font-light">Bespoke Service</p>
-        <h2 className="text-4xl font-light mb-6" style={{ fontFamily: "Playfair Display, serif" }}>
+      {/* Process Section */}
+      <section className="py-24 px-6 bg-gray-50">
+        <div className="max-w-screen-xl mx-auto">
+          <div className="text-center mb-16">
+            <p className="text-amber-600 text-xs tracking-[0.4em] uppercase mb-4">The Process</p>
+            <h2 className="text-4xl font-light text-gray-900 mb-6" style={{ fontFamily: "Playfair Display, serif" }}>
+              How It Works
+            </h2>
+            <div className="w-16 h-px bg-amber-500 mx-auto" />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+            {[
+              {
+                step: "01",
+                title: "Select Your Artwork",
+                desc: "Browse our collection and choose the pieces that speak to you. Select your preferred sizes."
+              },
+              {
+                step: "02",
+                title: "Personal Consultation",
+                desc: "Mr. Koushik will personally reach out to discuss your selection and answer any questions."
+              },
+              {
+                step: "03",
+                title: "Delivery & Authentication",
+                desc: "Receive your hand-signed, numbered print with certificate of authenticity. Worldwide shipping."
+              }
+            ].map((item) => (
+              <div key={item.step} className="text-center">
+                <p className="text-5xl font-light text-amber-500/30 mb-6" style={{ fontFamily: "Playfair Display, serif" }}>
+                  {item.step}
+                </p>
+                <h3 className="text-lg font-medium text-gray-900 mb-3 tracking-wide">{item.title}</h3>
+                <p className="text-gray-500 text-sm leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Contact CTA */}
+      <section className="py-24 px-6 bg-gray-900 text-white text-center">
+        <p className="text-amber-400 text-xs tracking-[0.4em] uppercase mb-6 font-light">Bespoke Commissions</p>
+        <h2 className="text-4xl lg:text-5xl font-light mb-8" style={{ fontFamily: "Playfair Display, serif" }}>
           Looking for Something Specific?
         </h2>
-        <p className="text-white/50 text-sm leading-relaxed max-w-xl mx-auto mb-10">
-          I offer bespoke print commissions, custom sizes for commercial spaces, and exclusive licensing for editorial and advertising use. Get in touch to discuss your requirements.
+        <p className="text-white/50 text-sm leading-relaxed max-w-xl mx-auto mb-12">
+          I offer bespoke print commissions, custom sizes for commercial spaces, and exclusive licensing. 
+          Let's create something extraordinary together.
         </p>
         <a
           href="/contact"
-          className="inline-flex items-center gap-3 border border-amber-400 text-amber-400 px-10 py-4 text-xs tracking-[0.2em] uppercase hover:bg-amber-400 hover:text-black transition-all duration-300"
+          className="inline-flex items-center gap-3 border border-amber-400 text-amber-400 px-12 py-5 text-xs tracking-[0.3em] uppercase hover:bg-amber-400 hover:text-gray-900 transition-all duration-300"
         >
-          Enquire Now
+          Get in Touch
         </a>
       </section>
 
+      {/* Modal */}
       {selectedPrint && (
-        <PrintModal print={selectedPrint} onClose={() => setSelectedPrint(null)} />
+        <ArtworkModal print={selectedPrint} onClose={() => setSelectedPrint(null)} />
       )}
 
       <Footer />

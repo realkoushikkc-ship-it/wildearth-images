@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { printsData } from "../data/images";
-import { X, Check, Mail, ArrowRight, Shield, Loader2 } from "lucide-react";
+import { X, Check, Mail, ArrowRight, Shield } from "lucide-react";
 
 const categories = ["All", "Big Cats", "Elephants", "Birds", "Marine"];
 
@@ -15,8 +15,6 @@ function ArtworkModal({ print, onClose }: { print: typeof printsData[0]; onClose
   const [selectedSizes, setSelectedSizes] = useState<SelectedSize[]>([]);
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
 
   // Calculate prices based on size
   const sizePricing: Record<string, number> = {
@@ -28,53 +26,57 @@ function ArtworkModal({ print, onClose }: { print: typeof printsData[0]; onClose
 
   const toggleSize = (size: string) => {
     const price = sizePricing[size];
-    setSelectedSizes(prev => {
-      const exists = prev.find(s => s.size === size);
+    setSelectedSizes((prev) => {
+      const exists = prev.find((s) => s.size === size);
       if (exists) {
-        return prev.filter(s => s.size !== size);
+        return prev.filter((s) => s.size !== size);
       }
       return [...prev, { size, price }];
     });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
-    setError("");
     
-    try {
-      const response = await fetch("http://localhost:5000/api/enquiry", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: email,
-          printTitle: print.title,
-          printCategory: print.category,
-          printLocation: print.location,
-          printEdition: print.edition,
-          printImage: print.image,
-          selectedSizes: selectedSizes,
-          totalPrice: selectedSizes.reduce((sum, s) => sum + s.price, 0),
-        }),
-      });
+    // Format the email body
+    const sizesText = selectedSizes.map((s) => `• ${s.size} - £${s.price}`).join("\n");
+    const subject = `Customer Request: ${print.title}`;
+    const body = `Hello Mr. Koushik,
 
-      if (!response.ok) {
-        throw new Error("Failed to send enquiry");
-      }
+I am interested in purchasing the following fine art print:
 
-      setSubmitted(true);
-    } catch (err) {
-      setError("Failed to send enquiry. Please try again.");
-    } finally {
-      setIsLoading(false);
-    }
+ARTWORK DETAILS:
+Title: ${print.title}
+Category: ${print.category}
+Location: ${print.location}
+Edition: ${print.edition}
+
+SELECTED SIZES:
+${sizesText}
+
+TOTAL ESTIMATED PRICE: £${totalPrice}
+
+CUSTOMER EMAIL: ${email}
+
+Please contact me to proceed with the order.
+
+Thank you.`;
+
+    // Create the native mailto link (Zero backend, Zero 3rd party)
+    const mailtoLink = `mailto:realkoushikkc@gmail.com?subject=${encodeURIComponent(
+      subject
+    )}&body=${encodeURIComponent(body)}`;
+    
+    // Open the user's email client
+    window.location.href = mailtoLink;
+    
+    // Show the success message immediately
+    setSubmitted(true);
   };
 
   const totalPrice = selectedSizes.reduce((sum, s) => sum + s.price, 0);
 
-  // Close on Escape key
+  // Close modal on Escape key
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -84,130 +86,114 @@ function ArtworkModal({ print, onClose }: { print: typeof printsData[0]; onClose
   }, [onClose]);
 
   return (
-    <div className="fixed inset-0 z-[100] bg-black flex items-center justify-center p-0 lg:p-8">
-      {/* Close button - top right */}
+    <div 
+      className="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center p-0 lg:p-8 backdrop-blur-sm" 
+      onClick={onClose} // Click outside the modal to close
+    >
+      {/* Close Button (X) */}
       <button
         onClick={onClose}
         className="absolute top-4 right-4 lg:top-8 lg:right-8 z-50 w-12 h-12 bg-white/10 hover:bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white transition-all duration-300 group"
+        aria-label="Close modal"
       >
         <X size={24} className="group-hover:rotate-90 transition-transform duration-300" />
       </button>
 
       {!submitted ? (
-        <div className="w-full max-w-7xl h-full lg:h-auto bg-white grid grid-cols-1 lg:grid-cols-2 overflow-hidden shadow-2xl">
-          
-          {/* LEFT: Framed Artwork Display */}
-          <div className="relative bg-gradient-to-br from-gray-900 via-gray-800 to-black flex items-center justify-center p-8 lg:p-16 min-h-[50vh] lg:min-h-[800px]">
-            {/* Background Pattern */}
-            <div className="absolute inset-0 opacity-5">
-              <div className="absolute inset-0" style={{
-                backgroundImage: "radial-gradient(circle at 2px 2px, white 1px, transparent 0)",
-                backgroundSize: "40px 40px"
-              }} />
-            </div>
+        <div 
+          className="w-full max-w-7xl h-full lg:h-auto bg-white grid grid-cols-1 lg:grid-cols-2 overflow-hidden shadow-2xl relative"
+          onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the modal
+        >
+          {/* LEFT SIDE: Framed Artwork Display */}
+          <div className="relative bg-gradient-to-br from-gray-900 via-gray-800 to-black flex items-center justify-center p-8 lg:p-16 min-h-[50vh] lg:min-h-[700px]">
+            {/* Subtle background pattern */}
+            <div className="absolute inset-0 opacity-5" style={{ backgroundImage: "radial-gradient(circle at 2px 2px, white 1px, transparent 0)", backgroundSize: "40px 40px" }} />
 
-            {/* Framed Artwork */}
             <div className="relative z-10">
-              {/* Outer Frame */}
+              {/* The Frame & Mat Board */}
               <div 
-                className="relative bg-white p-3 lg:p-4"
-                style={{
-                  boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)"
-                }}
+                className="relative bg-stone-100 p-2 lg:p-3" 
+                style={{ boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255,255,255,0.1) inset" }}
               >
-                {/* Mat Board - White border around image */}
-                <div className="bg-white p-6 lg:p-10">
-                  <img
-                    src={print.image}
-                    alt={print.title}
-                    className="w-full h-auto max-w-lg max-h-[60vh] lg:max-h-[500px] object-contain"
+                {/* White Mat Board */}
+                <div className="bg-white p-8 lg:p-12">
+                  <img 
+                    src={print.image} 
+                    alt={print.title} 
+                    className="w-full h-auto max-w-lg max-h-[50vh] lg:max-h-[450px] object-contain" 
                   />
                 </div>
               </div>
-
+              
               {/* Edition Label */}
               <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 bg-white px-6 py-2 text-xs tracking-[0.3em] uppercase text-gray-900 font-medium shadow-lg whitespace-nowrap">
                 {print.edition}
               </div>
 
-              {/* Hanging Shadow */}
+              {/* Realistic Hanging Shadow */}
               <div 
-                className="absolute -top-20 left-1/2 transform -translate-x-1/2 w-48 h-20 opacity-20"
-                style={{
-                  background: "radial-gradient(ellipse at center, rgba(0,0,0,0.4) 0%, transparent 70%)",
-                  filter: "blur(8px)"
-                }}
+                className="absolute -top-20 left-1/2 transform -translate-x-1/2 w-48 h-20 opacity-40" 
+                style={{ background: "radial-gradient(ellipse at center, rgba(0,0,0,0.6) 0%, transparent 70%)", filter: "blur(10px)" }} 
               />
             </div>
 
-            {/* Image Info Overlay - Bottom Left */}
+            {/* Image Info Overlay */}
             <div className="absolute bottom-8 left-8 text-white">
               <p className="text-amber-400 text-xs tracking-[0.3em] uppercase mb-2">{print.category}</p>
-              <h3 className="text-2xl font-light" style={{ fontFamily: "Playfair Display, serif" }}>
-                {print.title}
-              </h3>
+              <h3 className="text-2xl font-light" style={{ fontFamily: "Playfair Display, serif" }}>{print.title}</h3>
               <p className="text-white/60 text-sm mt-1">{print.location}</p>
             </div>
           </div>
 
-          {/* RIGHT: Selection Panel */}
-          <div className="bg-white p-8 lg:p-16 overflow-y-auto">
-            {/* Header */}
-            <div className="mb-10">
-              <p className="text-amber-600 text-xs tracking-[0.3em] uppercase mb-3 font-semibold">
-                {print.category}
-              </p>
-              <h2 className="text-4xl lg:text-5xl font-light text-gray-900 mb-4" style={{ fontFamily: "Playfair Display, serif" }}>
+          {/* RIGHT SIDE: Selection Panel */}
+          <div className="bg-white p-8 lg:p-12 overflow-y-auto max-h-screen lg:max-h-[90vh]">
+            <div className="mb-8">
+              <p className="text-amber-600 text-xs tracking-[0.3em] uppercase mb-3 font-semibold">{print.category}</p>
+              <h2 className="text-3xl lg:text-4xl font-light text-gray-900 mb-4" style={{ fontFamily: "Playfair Display, serif" }}>
                 {print.title}
               </h2>
-              <p className="text-gray-500 text-sm tracking-wide mb-2">{print.location}</p>
               <div className="flex items-center gap-4 mt-4">
-                <div className="w-16 h-px bg-amber-500" />
+                <div className="w-12 h-px bg-amber-500" />
                 <p className="text-gray-400 text-xs tracking-[0.2em] uppercase">{print.edition}</p>
               </div>
             </div>
 
             {/* Size Selection */}
-            <div className="mb-10">
-              <h3 className="text-xs tracking-[0.3em] uppercase text-gray-900 font-bold mb-6">
-                Select Sizes
-              </h3>
+            <div className="mb-8">
+              <h3 className="text-xs tracking-[0.3em] uppercase text-gray-900 font-bold mb-4">Select Sizes</h3>
               <div className="space-y-3">
                 {print.sizes.map((size) => {
                   const price = sizePricing[size];
-                  const isSelected = selectedSizes.find(s => s.size === size);
-                  
+                  const isSelected = selectedSizes.find((s) => s.size === size);
                   return (
                     <button
                       key={size}
                       onClick={() => toggleSize(size)}
-                      className={`w-full flex items-center justify-between p-5 border-2 transition-all duration-300 group ${
-                        isSelected 
-                          ? "border-gray-900 bg-gray-900 text-white" 
-                          : "border-gray-200 hover:border-gray-400 text-gray-700"
+                      className={`w-full flex items-center justify-between p-4 border-2 transition-all duration-300 group ${
+                        isSelected ? "border-gray-900 bg-gray-900 text-white" : "border-gray-200 hover:border-gray-400 text-gray-700"
                       }`}
                     >
                       <div className="flex items-center gap-4">
-                        <div className={`w-6 h-6 border-2 flex items-center justify-center transition-all ${
+                        <div className={`w-5 h-5 border-2 flex items-center justify-center transition-all ${
                           isSelected ? "border-white bg-white" : "border-gray-300 group-hover:border-gray-500"
                         }`}>
-                          {isSelected && <Check size={14} className="text-gray-900" />}
+                          {isSelected && <Check size={12} className="text-gray-900" />}
                         </div>
                         <span className="text-sm tracking-wide font-medium">{size}</span>
                       </div>
-                      <span className="text-lg font-light">£{price}</span>
+                      <span className="text-base font-light">£{price}</span>
                     </button>
                   );
                 })}
               </div>
             </div>
 
-            {/* Total */}
+            {/* Total Price */}
             {selectedSizes.length > 0 && (
-              <div className="mb-8 p-6 bg-gray-50 border border-gray-200">
-                <div className="flex justify-between items-center mb-2">
-                  <span className="text-sm text-gray-600">Selected ({selectedSizes.length})</span>
-                  <span className="text-3xl font-light text-gray-900" style={{ fontFamily: "Playfair Display, serif" }}>
+              <div className="mb-8 p-5 bg-gray-50 border border-gray-200">
+                <div className="flex justify-between items-center mb-1">
+                  <span className="text-sm text-gray-600">Total ({selectedSizes.length})</span>
+                  <span className="text-2xl font-light text-gray-900" style={{ fontFamily: "Playfair Display, serif" }}>
                     £{totalPrice}
                   </span>
                 </div>
@@ -234,39 +220,24 @@ function ArtworkModal({ print, onClose }: { print: typeof printsData[0]; onClose
                 </div>
               </div>
 
-              {error && (
-                <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 text-sm">
-                  {error}
-                </div>
-              )}
-
               <button
                 type="submit"
-                disabled={selectedSizes.length === 0 || isLoading}
-                className="w-full bg-gray-900 text-white py-5 text-xs tracking-[0.3em] uppercase hover:bg-amber-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center justify-center gap-3 font-medium"
+                disabled={selectedSizes.length === 0}
+                className="w-full bg-gray-900 text-white py-4 text-xs tracking-[0.3em] uppercase hover:bg-amber-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center justify-center gap-3 font-medium"
               >
-                {isLoading ? (
-                  <>
-                    <Loader2 size={16} className="animate-spin" />
-                    Processing...
-                  </>
-                ) : (
-                  <>
-                    Submit Enquiry <ArrowRight size={16} />
-                  </>
-                )}
+                Submit Enquiry <ArrowRight size={16} />
               </button>
 
               <div className="mt-6 flex items-center justify-center gap-2 text-gray-400 text-xs">
                 <Shield size={14} />
-                <span>Secure & Confidential</span>
+                <span>Opens your email client securely</span>
               </div>
             </form>
           </div>
         </div>
       ) : (
-        /* Success Message */
-        <div className="w-full max-w-2xl bg-white p-12 lg:p-16 text-center">
+        /* SUCCESS MESSAGE */
+        <div className="w-full max-w-2xl bg-white p-12 lg:p-16 text-center" onClick={(e) => e.stopPropagation()}>
           <div className="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mb-8 mx-auto">
             <Check size={48} className="text-green-600" />
           </div>
@@ -277,9 +248,7 @@ function ArtworkModal({ print, onClose }: { print: typeof printsData[0]; onClose
             Thank you so much for purchasing. Mr. Koushik will soon personally be in touch with you.
           </p>
           <div className="w-16 h-px bg-amber-500 mb-8 mx-auto" />
-          <p className="text-sm text-gray-400 mb-2">
-            A confirmation has been sent to
-          </p>
+          <p className="text-sm text-gray-400 mb-2">Your email client has been prepared with the details.</p>
           <p className="text-gray-900 font-medium mb-8">{email}</p>
           <button
             onClick={onClose}
@@ -297,9 +266,7 @@ export default function Prints() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [selectedPrint, setSelectedPrint] = useState<typeof printsData[0] | null>(null);
 
-  const filtered = activeCategory === "All"
-    ? printsData
-    : printsData.filter((p) => p.category === activeCategory);
+  const filtered = activeCategory === "All" ? printsData : printsData.filter((p) => p.category === activeCategory);
 
   return (
     <div className="bg-white min-h-screen">
@@ -395,9 +362,7 @@ export default function Prints() {
 
       <Footer />
 
-      {selectedPrint && (
-        <ArtworkModal print={selectedPrint} onClose={() => setSelectedPrint(null)} />
-      )}
+      {selectedPrint && <ArtworkModal print={selectedPrint} onClose={() => setSelectedPrint(null)} />}
     </div>
   );
 }
